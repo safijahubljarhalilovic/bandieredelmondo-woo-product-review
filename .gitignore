@@ -1,0 +1,13 @@
+# Ignore everything
+*
+
+# But keep this folder
+!wp-content/
+!wp-content/themes/
+!wp-content/themes/Divi-child/
+!wp-content/themes/Divi-child/**
+
+# (Optional) keep the .gitignore itself
+!.gitignore
+!.htaccess
+!wp-config.php

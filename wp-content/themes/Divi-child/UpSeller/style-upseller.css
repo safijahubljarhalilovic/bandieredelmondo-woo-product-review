@@ -1,0 +1,71 @@
+/* Contenitore generale */
+.upseller-first-four {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colonne su schermi grandi */
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Singolo prodotto */
+.upseller-first-four .product {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.upseller-first-four .product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Immagine del prodotto */
+.upseller-first-four .product .et_shop_image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Nome del prodotto */
+.upseller-first-four .product p {
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Prezzo */
+.upseller-first-four .product .price {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+}
+
+/* Overlay immagine */
+.upseller-first-four .et_overlay {
+    display: none; /* Rimuovi se non necessario */
+}
+
+/* Reattività */
+@media (max-width: 1024px) { /* Tablet */
+    .upseller-first-four {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonne su tablet */
+    }
+}
+
+@media (max-width: 768px) { /* Smartphone */
+    .upseller-first-four {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonne anche su smartphone */
+        gap: 15px; /* Riduci lo spazio tra i prodotti */
+    }
+
+    .upseller-first-four .product {
+        padding: 10px; /* Riduci il padding per adattare lo spazio */
+    }
+}

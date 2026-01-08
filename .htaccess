@@ -1,0 +1,433 @@
+# BEGIN WP Rocket
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset UTF-8
+# Force UTF-8 for a number of file formats
+<IfModule mod_mime.c>
+AddCharset UTF-8 .atom .css .js .json .rss .vtt .xml
+</IfModule>
+
+# FileETag None is not enough for every server.
+<IfModule mod_headers.c>
+Header unset ETag
+</IfModule>
+
+# Since we’re sending far-future expires, we don’t need ETags for static content.
+# developer.yahoo.com/performance/rules.html#etags
+FileETag None
+
+<IfModule mod_alias.c>
+<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">
+<IfModule mod_headers.c>
+Header set X-Powered-By "WP Rocket/3.20.2"
+Header unset Pragma
+Header append Cache-Control "public"
+Header unset Last-Modified
+</IfModule>
+</FilesMatch>
+
+<FilesMatch "\.(css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$">
+<IfModule mod_headers.c>
+Header unset Pragma
+Header append Cache-Control "public"
+</IfModule>
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+	AddType image/avif                                  avif
+    AddType image/avif-sequence                         avifs
+</IfModule>
+# Expires headers (for better cache control)
+<IfModule mod_expires.c>
+	ExpiresActive on
+	ExpiresDefault                              "access plus 1 month"
+	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
+	ExpiresByType text/cache-manifest           "access plus 0 seconds"
+	# Your document html
+	ExpiresByType text/html                     "access plus 0 seconds"
+	# Data
+	ExpiresByType text/xml                      "access plus 0 seconds"
+	ExpiresByType application/xml               "access plus 0 seconds"
+	ExpiresByType application/json              "access plus 0 seconds"
+	# Feed
+	ExpiresByType application/rss+xml           "access plus 1 hour"
+	ExpiresByType application/atom+xml          "access plus 1 hour"
+	# Favicon (cannot be renamed)
+	ExpiresByType image/x-icon                  "access plus 1 week"
+	# Media: images, video, audio
+	ExpiresByType image/gif                     "access plus 4 months"
+	ExpiresByType image/png                     "access plus 4 months"
+	ExpiresByType image/jpeg                    "access plus 4 months"
+	ExpiresByType image/webp                    "access plus 4 months"
+	ExpiresByType video/ogg                     "access plus 4 months"
+	ExpiresByType audio/ogg                     "access plus 4 months"
+	ExpiresByType video/mp4                     "access plus 4 months"
+	ExpiresByType video/webm                    "access plus 4 months"
+	ExpiresByType image/avif                    "access plus 4 months"
+	ExpiresByType image/avif-sequence           "access plus 4 months"
+	# HTC files  (css3pie)
+	ExpiresByType text/x-component              "access plus 1 month"
+	# Webfonts
+	ExpiresByType font/ttf                      "access plus 4 months"
+	ExpiresByType font/otf                      "access plus 4 months"
+	ExpiresByType font/woff                     "access plus 4 months"
+	ExpiresByType font/woff2                    "access plus 4 months"
+	ExpiresByType image/svg+xml                 "access plus 4 months"
+	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+	# CSS and JavaScript
+	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType application/javascript        "access plus 1 year"
+</IfModule>
+# Gzip compression
+<IfModule mod_deflate.c>
+# Active compression
+SetOutputFilter DEFLATE
+# Force deflate for mangled headers
+<IfModule mod_setenvif.c>
+<IfModule mod_headers.c>
+SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+# Don’t compress images and other uncompressible content
+SetEnvIfNoCase Request_URI \
+\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp|pdf)$ no-gzip dont-vary
+</IfModule>
+</IfModule>
+
+# Compress all output labeled with one of the following MIME-types
+<IfModule mod_filter.c>
+AddOutputFilterByType DEFLATE application/atom+xml \
+		                          application/javascript \
+		                          application/json \
+		                          application/rss+xml \
+		                          application/vnd.ms-fontobject \
+		                          application/x-font-ttf \
+		                          application/xhtml+xml \
+		                          application/xml \
+		                          font/opentype \
+		                          image/svg+xml \
+		                          image/x-icon \
+		                          text/css \
+		                          text/html \
+		                          text/plain \
+		                          text/x-component \
+		                          text/xml
+</IfModule>
+<IfModule mod_headers.c>
+Header append Vary: Accept-Encoding
+</IfModule>
+</IfModule>
+
+
+# END WP Rocket
+# HTTPS forced by SG-Optimizer
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+# END HTTPS
+
+
+# COMPRESSIONE AVANZATA
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+    AddOutputFilterByType DEFLATE application/rss+xml application/atom+xml image/svg+xml
+</IfModule>
+
+# BROWSER CACHING AGGRESSIVO
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # IMMAGINI: 1 anno
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    
+    # FONT: 1 anno
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    
+    # CSS/JS: 1 mese
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # HTML: 1 ora (per vedere cambiamenti)
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# PRELOAD FONT CRITICI
+<IfModule mod_headers.c>
+    <FilesMatch "\.(woff2?|ttf|otf)$">
+        Header set Cache-Control "public, immutable, max-age=31536000"
+        Header unset ETag
+        FileETag None
+    </FilesMatch>
+</IfModule> 
+
+# BEGIN WordPress
+# Le direttive (linee) tra "BEGIN WordPress" e "END WordPress" sono
+# generate dinamicamente, e dovrebbero essere modificate solo tramite i filtri di WordPress.
+# Ogni modifica alle direttive tra questi marcatori verrà sovrascritta.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+# SGO Unset Vary
+  Header unset Vary
+# SGO Unset Vary END
+
+# Redirect 
+Redirect 301 /blog/ https://bandieredelmondo.it/
+Redirect 301 /hello-world/ https://bandieredelmondo.it/
+Redirect 301 /contact-us/ https://bandieredelmondo.it/
+#Redirect 301 /shop/ https://bandieredelmondo.it/
+Redirect 301 /home/ https://bandieredelmondo.it/
+Redirect 301 /cooming-soon/ https://bandieredelmondo.it/
+Redirect 301 /home-page-v5/ https://bandieredelmondo.it/
+Redirect 301 /home-page-v6/ https://bandieredelmondo.it/
+Redirect 301 /come-piegare-conservare-il-tricolore-italiano https://bandieredelmondo.it/come-piegare-la-bandiera-italiana/
+Redirect 301 /uncategorized/ https://bandieredelmondo.it/bandiere-personalizzate/
+
+Redirect 301 /author/dany28/ https://bandieredelmondo.it/
+Redirect 301 /shop/bandiere/bandiere-degli-stati/bandiere-nord-america/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-contee-inghilterra https://bandieredelmondo.it/
+Redirect 301 /accessori-gonfaloni-labari https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-tifosi-ultras-stadio https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-squadre-di-calcio https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-centroamerica https://bandieredelmondo.it/
+Redirect 301 /bandiere-in-pronta-consegna https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-oceania https://bandieredelmondo.it/
+Redirect 301 /bandiere-di-fantasia https://bandieredelmondo.it/
+Redirect 301 /bandiere-stati-americani https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-cantanti-gruppi-musicali https://bandieredelmondo.it/
+Redirect 301 /bandiere-distretti-portoghesi https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-caserme-esercito-forze-di-polizia https://bandieredelmondo.it/
+Redirect 301 /bandiere-adesive https://bandieredelmondo.it/
+Redirect 301 /bandiere-stati-federali-austriaci https://bandieredelmondo.it/
+Redirect 301 /bandiere-storia https://bandieredelmondo.it/
+Redirect 301 /striscioni-pubblicitari-in-pvc https://bandieredelmondo.it/
+Redirect 301 /adesivi-bandiere https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-rivenditori https://bandieredelmondo.it/
+Redirect 301 /libri-bandiere https://bandieredelmondo.it/
+Redirect 301 /accessori-per-bandiere https://bandieredelmondo.it/
+Redirect 301 /area-faq https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-balconi https://bandieredelmondo.it/
+Redirect 301 /centro-italiano-studi-vessillologici https://bandieredelmondo.it/
+Redirect 301 /bandiere-associazioni https://bandieredelmondo.it/
+Redirect 301 /bandiere-in-offertaa https://bandieredelmondo.it/
+Redirect 301 /bandiere-organizzazioni-internazionali https://bandieredelmondo.it/
+Redirect 301 /product/bandiera-italiana-copia-copia/ https://bandieredelmondo.it/
+Redirect 301 /codice-internazionale-nautico https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-autosaloni https://bandieredelmondo.it/
+Redirect 301 /bandiere-cantoni-svizzeri https://bandieredelmondo.it/
+Redirect 301 /magliette-felpe-t-shirt-bandiere https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-sud-america https://bandieredelmondo.it/
+Redirect 301 /custom-flag/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-balinesi https://bandieredelmondo.it/
+Redirect 301 /vexilla-mundi/ https://bandieredelmondo.it/
+Redirect 301 /product-category/gadget/ https://bandieredelmondo.it/
+Redirect 301 /shop/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-a-vela-pubblicitarie https://bandieredelmondo.it/
+Redirect 301 /accessori-gonfaloni-labari/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-rugby https://bandieredelmondo.it/
+Redirect 301 /product-category/bandiere/banediere-degli-stati/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-basket-americano https://bandieredelmondo.it/
+Redirect 301 /product-category/bandiera/bandiere-da-tavolo/ https://bandieredelmondo.it/
+Redirect 301 /my-account/ https://bandieredelmondo.it/
+Redirect 301 /accessori-bandiere-per-esterno https://bandieredelmondo.it/
+Redirect 301 /product-category/gadget/felpe/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-piscine https://bandieredelmondo.it/
+Redirect 301 /bandiere-politiche https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-sbandieratori https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-isole-atlantico https://bandieredelmondo.it/
+Redirect 301 /condizioni-generali-di-vendita-cgv/ https://bandieredelmondo.it/garanzie-condizioni-di-vendita/
+Redirect 301 /bandiera-personalizzata/ https://bandieredelmondo.it/
+Redirect 301 /?page_id=52262 https://bandieredelmondo.it/
+Redirect 301 /tag/stelle/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-america-del-nord https://bandieredelmondo.it/
+Redirect 301 /fasce-da-sindaco https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-isole-pacifico https://bandieredelmondo.it/
+Redirect 301 /tag/blu-282c/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-comuni-italiane https://bandieredelmondo.it/
+Redirect 301 /bandiere-comunita-spagnole https://bandieredelmondo.it/
+Redirect 301 /accessori-bandiere-auto https://bandieredelmondo.it/
+Redirect 301 /bandiere-football-americano https://bandieredelmondo.it/
+Redirect 301 /maniche-del-vento-accessori https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-ambasciate-consolati https://bandieredelmondo.it/
+Redirect 301 /newsletter-bandiere https://bandieredelmondo.it/
+Redirect 301 /bandiere-natalizie https://bandieredelmondo.it/
+Redirect 301 /bandiere-piu-vendute https://bandieredelmondo.it/
+Redirect 301 /product-category/bandiere/kit/ https://bandieredelmondo.it/
+Redirect 301 /lorem-ipsum-dolor-sit-amet/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-bambini https://bandieredelmondo.it/
+Redirect 301 /product/italia/ https://bandieredelmondo.it/
+Redirect 301 /shop/bandiere/bandiere-degli-stati/bandiere-europee/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-africane https://bandieredelmondo.it/
+Redirect 301 /bandiere-ricamate https://bandieredelmondo.it/
+Redirect 301 /shop/bandiere/bandiere-degli-stati/bandiere-europee/bandiere-regioni-ditalia/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-etniche-gruppi https://bandieredelmondo.it/
+Redirect 301 /bandiere-regioni-regno-unito https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-poligoni-di-tiro-segnavento https://bandieredelmondo.it/
+Redirect 301 /tag/bianco/ https://bandieredelmondo.it/
+Redirect 301 /tag/rosso-193c/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-regate https://bandieredelmondo.it/
+Redirect 301 /bandiere-squadre-calcio-serie-a https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-agriturismi https://bandieredelmondo.it/
+Redirect 301 /product/bandiera-italia-copia/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-europee https://bandieredelmondo.it/
+Redirect 301 /disposizione-delle-bandiere https://bandieredelmondo.it/
+Redirect 301 /guidoni-nautici https://bandieredelmondo.it/
+Redirect 301 /accessori-bandiere-bicicletta https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche https://bandieredelmondo.it/
+Redirect 301 /bandiere-contee-scozzesi https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-feste-di-.compleanno https://bandieredelmondo.it/
+Redirect 301 /bandiere-formula-1 https://bandieredelmondo.it/
+Redirect 301 /tag/blu-286c/ https://bandieredelmondo.it/
+Redirect 301 /product-category/accessori/aste/ https://bandieredelmondo.it/
+Redirect 301 /museo-della-bandiera https://bandieredelmondo.it/
+Redirect 301 /social-network-bandiere https://bandieredelmondo.it/
+Redirect 301 /tag/argento/ https://bandieredelmondo.it/
+Redirect 301 /shop/bandiere/bandiere-degli-stati/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-in-applicazione https://bandieredelmondo.it/
+Redirect 301 /product-category/accessori/ https://bandieredelmondo.it/
+Redirect 301 /tag/rosso-485c/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-amministrazioni-comunali-enti https://bandieredelmondo.it/
+Redirect 301 /tag/nero/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-storiche-asiatiche https://bandieredelmondo.it/
+Redirect 301 /bandiere-basket-pallacanestro https://bandieredelmondo.it/
+Redirect 301 /accessori-bandiere-per-interno https://bandieredelmondo.it/
+Redirect 301 /bandiere-religiose https://bandieredelmondo.it/
+Redirect 301 /product-category/bandiere/banediere-degli-stati/bandiere-europee/ https://bandieredelmondo.it/
+Redirect 301 /sample-page/ https://bandieredelmondo.it/
+Redirect 301 /tag/tricolore/ https://bandieredelmondo.it/
+Redirect 301 /product-tag/blu-280c/ https://bandieredelmondo.it/
+Redirect 301 /studi-vessillologici https://bandieredelmondo.it/
+Redirect 301 /shop/bandiere-degli-stati/ https://bandieredelmondo.it/
+Redirect 301 /shop/bandiere-degli-stati/bandiere-europee/ https://bandieredelmondo.it/
+Redirect 301 /kit-bandiere https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-negozi https://bandieredelmondo.it/
+Redirect 301 /accessori-bandiere-da-tavolo https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-guide-turistiche https://bandieredelmondo.it/
+Redirect 301 /bandiere-contee-irlandesi https://bandieredelmondo.it/
+Redirect 301 /bandiere-isole-atlantico https://bandieredelmondo.it/
+Redirect 301 /bandiere-africane https://bandieredelmondo.it/
+Redirect 301 /bandiere-stati-federali-tedeschi-germania https://bandieredelmondo.it/
+Redirect 301 /bandiere-in-serigrafia https://bandieredelmondo.it/
+Redirect 301 /notizie-mondo-bandiere https://bandieredelmondo.it/
+Redirect 301 /bandiere-al-cinema https://bandieredelmondo.it/
+Redirect 301 /roll-up https://bandieredelmondo.it/
+Redirect 301 /garanzie https://bandieredelmondo.it/
+Redirect 301 /grandezze-misure-delle-bandiere https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-societa-sporticve https://bandieredelmondo.it/
+Redirect 301 /bandiere-a-goccia-pubblicitarie https://bandieredelmondo.it/
+Redirect 301 /cosa-dicono-i-nostri-clienti https://bandieredelmondo.it/
+Redirect 301 /bandiere-indiani-d-america https://bandieredelmondo.it/
+Redirect 301 /bandiere-magnetiche https://bandieredelmondo.it/
+Redirect 301 /product-category/accessori/aste-per-moto/ https://bandieredelmondo.it/
+Redirect 301 /gran-pavese https://bandieredelmondo.it/
+Redirect 301 /product-tag/blu-280c/feed/ https://bandieredelmondo.it/
+Redirect 301 /bandiere-per-gare-automobilistiche-kart https://bandieredelmondo.it/
+Redirect 301 /cart-2/ https://bandieredelmondo.it/
+Redirect 301 /product-category/uncategorized/ https://bandieredelmondo.it/
+
+# Fine Redirect
+
+# Wordfence WAF
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # IMMAGINI: cache 1 anno
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    
+    # FONT: cache 1 anno
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    
+    # CSS/JS: cache 1 mese
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # ICONE
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # FORZA CACHE PER IMMAGINI CRITICHE
+    <FilesMatch "bandiera-della-palestina-gaza\.(jpg|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    <FilesMatch "bandiere-europee\.(jpg|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    <FilesMatch "lisoladellafelicita\.(jpg|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    # PREVENT CLS
+    <FilesMatch "\.(jpg|jpeg|png|webp|gif)$">
+        Header set Content-Security-Policy "default-src 'self'; img-src 'self' data:;"
+    </FilesMatch>
+</IfModule>
+
+# COMPRESSIONE GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript
+    AddOutputFilterByType DEFLATE font/woff font/woff2 font/ttf
+</IfModule>
+
+
+
+
+<IfModule mod_php5.c>
+	php_value auto_prepend_file '/home/customer/www/bandieredelmondo.it/public_html/wordfence-waf.php'
+</IfModule>
+<IfModule mod_php7.c>
+	php_value auto_prepend_file '/home/customer/www/bandieredelmondo.it/public_html/wordfence-waf.php'
+</IfModule>
+<IfModule mod_php.c>
+	php_value auto_prepend_file '/home/customer/www/bandieredelmondo.it/public_html/wordfence-waf.php'
+</IfModule>
+<Files ".user.ini">
+<IfModule mod_authz_core.c>
+	Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+	Order deny,allow
+	Deny from all
+</IfModule>
+</Files>
+
+# END Wordfence WAF
+
+# BEGIN Speed Optimizer by 10Web
+# Le direttive (linee) tra "BEGIN Speed Optimizer by 10Web" e "END Speed Optimizer by 10Web" sono
+# generate dinamicamente, e dovrebbero essere modificate solo tramite i filtri di WordPress.
+# Ogni modifica alle direttive tra questi marcatori verrà sovrascritta.
+
+
+# END Speed Optimizer by 10Web

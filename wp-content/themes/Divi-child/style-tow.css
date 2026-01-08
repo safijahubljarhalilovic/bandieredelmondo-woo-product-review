@@ -1,0 +1,334 @@
+/* ### Css Tow ### */
+
+/* ### Bandiere Tipi Vari ### */
+/* Economiche Hotel Mare Automobilistiche */
+
+.bandiere-tipi-vari {
+    width: 18%;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 10px;
+    vertical-align: top;
+    text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+    .bandiere-tipi-vari {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .bandiere-tipi-vari {
+        width: 50%;
+    }
+}
+
+
+.button-bandiere-tipo-vari {
+    background-color: #ffffff;
+    border: none;
+    transition: background-color 0.3s; /* Aggiungi una transizione per rendere l'effetto hover più fluido */
+}
+
+.button-bandiere-tipo-vari:hover {
+    background-color: #b6c8ea; /* Cambia il colore di sfondo al passaggio del mouse */
+}
+
+
+
+.quantity-bandiere-tipi-vari {
+    width: 40%;
+    margin: 4px auto 10px;
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+
+.carrello-bandiere-tipi-vari {
+    width: 50%;
+    background-color: #003dc1;
+    padding-left: 14px;
+    padding-right: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* Stili per dispositivi mobili */
+@media screen and (max-width: 480px) {
+    .carrello-bandiere-tipi-vari {
+        width: 50%;
+        background-color: #003dc1;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .carrello-bandiere-tipi-vari {
+        width: 50%;
+        background-color: #003dc1;
+    }
+}
+
+.p-bandiere-tipi-vari {
+    margin-bottom: -14px;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.2; 
+    color: #000000;
+}
+
+
+.p-prezzo-bandiere-tipi-vari .woocommerce-Price-amount {
+   color: #043bad;
+    font-weight: normal;
+    font-size: 18px;
+}
+
+
+
+@media only screen and (max-width: 767px) {}
+
+.p-prezzo-bandiere-tipi-vari {
+    font-size: 14px;
+    font-weight: bold;
+}
+/* Fine Bandiere Tipi Vari */
+
+
+/* elenco_desktop_menu  */
+.elenco_desktop_menu {
+    /* Stili generali del menu */
+    font-family: inherit; /* Usa il font del tema */
+    padding: 10px;
+    text-align: left; /* Allineamento a sinistra */
+    width: 100%; /* Assicura che il contenitore occupi tutta la larghezza disponibile */
+}
+
+.elenco_desktop_menu * {
+    /* Applica l'allineamento a sinistra a tutti gli elementi figlio */
+    text-align: left;
+}
+
+.elenco_desktop_menu a {
+    /* Stili per tutti i link nel menu */
+    color: #ffffff; /* Testo bianco */
+    text-decoration: underline; /* Sottolineatura */
+    padding: 5px 10px;
+    display: inline-block; /* Permette ai link di allinearsi a sinistra */
+}
+
+.elenco_desktop_menu strong {
+    /* Assicura che gli elementi strong non interferiscano con l'allineamento */
+    display: inline-block;
+}
+
+.elenco_desktop_menu strong a {
+    /* Stili per i link di primo livello (in grassetto) */
+    font-weight: bold;
+}
+
+/* Fine elenco_desktop_menu  */
+
+
+/* CARTA DEL VENTO */
+
+ .titolo-cdv {
+    font-weight: bold;
+    height: 100px;
+    overflow: auto; /* o 'hidden' se preferisci nascondere il contenuto in eccesso */
+}
+
+.calendario-bandiere-container-cdv {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.evento-bandiera-cdv {
+    flex-basis: calc(33.333% - 20px);
+    margin-bottom: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 767px) {
+    .calendario-bandiere-container-cdv {
+        flex-direction: column;
+    }
+
+    .evento-bandiera-cdv {
+        flex-basis: 100%;
+    }
+}
+
+/* FINE CARTA DEL VENTO */
+
+
+/*MODULO STICHY TOW MENU' */
+
+/* Contenitore principale */
+.row_container_sticky_tow {
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+    min-height: 80px !important;
+}
+
+
+/* Logo (Blocco 1) */
+.modulo_1_sticky_tow img {
+    width: 180px; /* Larghezza fissa per il logo */
+}
+
+/* Modulo di ricerca (Blocco 2) */
+.modulo_2_sticky_tow {
+    flex: 1; /* Si adatta allo spazio rimanente */
+    margin-left: 20px; /* Spazio a sinistra */
+}
+
+/* Moduli con larghezza proporzionale (Blocchi 3, 4, 5) */
+.modulo_3_sticky_tow,
+.modulo_4_sticky_tow,
+.modulo_5_sticky_tow {
+    flex: 0 0 auto; /* Mantengono la loro larghezza naturale */
+    margin-left: 20px; /* Spazio a sinistra */
+}
+
+
+
+.cart-menu a.et_pb_menu__cart-button  {
+    color: #043bad !important; /* Blu scuro */
+  background-color: #DEB92F !important;
+ 
+ }
+
+.cart-menu.et_pb_menu .et_pb_menu__menu>nav>ul>li:first-child  {
+		display: none !important;    
+}  
+      
+.cart-menu a.et_pb_menu__cart-button  {
+		padding: 8px 10px !important;
+  	margin: 0px !important;
+  	border-radius: 7px !important; 
+}
+  
+.cart-menu .et_mobile_nav_menu  {
+   display: none !important; 
+}
+
+
+/* Stili per i link all'interno di ogni modulo */
+.modulo_1_sticky_tow a,
+.modulo_2_sticky_tow a,
+.modulo_3_sticky_tow a,
+.modulo_4_sticky_tow a,
+.modulo_5_sticky_tow a,
+.modulo_6_sticky_tow a,
+.modulo_7_sticky_tow a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.modulo_1_sticky_tow {
+    flex: 0 0 94px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.modulo_2_sticky_tow {
+    flex: 0 0 auto;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modulo_3_sticky_tow {
+    flex: 1;
+    align-self: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modulo_4_sticky_tow,
+.modulo_5_sticky_tow,
+.modulo_6_sticky_tow,
+.modulo_7_sticky_tow {
+    flex: 0 0 auto;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modulo_1_sticky_tow, 
+.modulo_2_sticky_tow, 
+.modulo_4_sticky_tow, 
+.modulo_5_sticky_tow, 
+.modulo_6_sticky_tow, 
+.modulo_7_sticky_tow {
+    padding: 6px;
+}
+
+/* Effetto hover */
+.modulo_1_sticky_tow:hover, 
+.modulo_2_sticky_tow:hover, 
+.modulo_3_sticky_tow:hover, 
+.modulo_4_sticky_tow:hover, 
+.modulo_5_sticky_tow:hover, 
+.modulo_6_sticky_tow:hover, 
+.modulo_7_sticky_tow:hover {
+    outline: 0.5px solid white;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+/* FINE MODULO STICKY MENU TOW */
+
+
+
+
+/* MODULO STICHY TOW MENU 2 */
+
+/* Contenitore principale */
+
+.row_container_sticky2_tow {
+    display: flex;
+    align-items: flex-start; 
+    width: 100% !important;     
+}
+
+/* Modulo 1: menu largo, prende tutto lo spazio disponibile */
+.modulo_1_sticky2_tow {
+    flex: 1;
+    margin-left: 20px;
+    padding-top: 6px;
+}
+
+/* Modulo 2: login */
+.modulo_2_sticky2_tow {
+    flex: 0 0 300px;
+    margin-left: 20px;
+    padding-top: 6px;
+    
+}
+
+/* Modulo 3: hamburger menu */
+.modulo_3_sticky2_tow {
+    flex: 0 0 auto;
+    margin-left: 20px;
+    padding-top: 6px;
+    
+}
