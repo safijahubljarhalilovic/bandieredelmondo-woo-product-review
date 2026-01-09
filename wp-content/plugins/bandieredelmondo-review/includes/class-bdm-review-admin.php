@@ -118,9 +118,9 @@ class BDM_Review_Admin {
     );
 
     add_submenu_page(
-      'options-general.php',
-      'BDM Review Settings',
-      'BDM Review Settings',
+      'edit.php?post_type=' . BDM_Review_CPT::CPT,
+      'Settings',
+      'Settings',
       'manage_options',
       'bdm-review-settings',
       [__CLASS__, 'render_settings_page']
