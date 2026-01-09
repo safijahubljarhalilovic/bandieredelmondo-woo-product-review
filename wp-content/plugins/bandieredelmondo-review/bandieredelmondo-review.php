@@ -28,9 +28,6 @@ class BandieredelMondo_Review_Plugin {
 
     // Assets
     add_action('wp_enqueue_scripts', [__CLASS__, 'enqueue_assets']);
-
-    // Settings default
-    add_action('admin_init', [__CLASS__, 'register_settings']);
   }
 
   public static function load() {
