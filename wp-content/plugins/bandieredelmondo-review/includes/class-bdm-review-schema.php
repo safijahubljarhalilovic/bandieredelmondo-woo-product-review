@@ -61,9 +61,9 @@ class BDM_Review_Schema {
         'reviewBody' => wp_strip_all_tags($body),
         'reviewRating' => [
           '@type' => 'Rating',
-          'ratingValue' => (string)$rating,
-          'bestRating' => '5',
-          'worstRating' => '1',
+          'ratingValue' => $rating,
+          'bestRating' => 5,
+          'worstRating' => 1,
         ],
       ];
     }
@@ -77,10 +77,10 @@ class BDM_Review_Schema {
     // Add/override aggregateRating + review in Woo markup
     $markup['aggregateRating'] = [
       '@type' => 'AggregateRating',
-      'ratingValue' => (string)$avg,
-      'reviewCount' => (string)$count,
-      'bestRating' => '5',
-      'worstRating' => '1',
+      'ratingValue' => $avg,
+      'reviewCount' => $count,
+      'bestRating' => 5,
+      'worstRating' => 1,
     ];
 
     // Keep review array not too large
