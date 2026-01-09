@@ -123,7 +123,6 @@
   padding:3px 8px;
   border-radius:999px;
   border:1px solid #ddd;
-  color: #FFC107;
 }
 .bdm-badge.cert{ border-color:#0a7; }
 .bdm-review-photos{
@@ -251,6 +250,7 @@
   font-size:14px;
   line-height:1;
   user-select:none;
+  color: #FFC107;
 }
 .bdm-star-inline.is-off{ opacity:.25; }
 
