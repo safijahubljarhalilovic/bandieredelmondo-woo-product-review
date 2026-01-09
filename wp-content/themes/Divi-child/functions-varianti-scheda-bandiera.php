@@ -1,4 +1,4 @@
-<?
+<?php
 /*BANDIERE DEL MONDO*/ 
 
 // Questa function crea il SELECT confezionamento con i controlli del caso
