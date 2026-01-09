@@ -72,7 +72,7 @@ class BDM_Review_Schema {
 
     if ($count < 1) return $markup;
 
-    $avg = round($sum / $count, 2);
+    $avg = (float) number_format($sum / $count, 2, '.', '');
 
     // Add/override aggregateRating + review in Woo markup
     $markup['aggregateRating'] = [
