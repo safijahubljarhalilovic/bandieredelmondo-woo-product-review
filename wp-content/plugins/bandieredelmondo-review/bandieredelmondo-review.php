@@ -24,7 +24,7 @@ require_once BDM_REVIEW_PATH . 'includes/class-bdm-review-schema.php';
 class BandieredelMondo_Review_Plugin {
 
   public static function init() {
-    add_action('init', [__CLASS__, 'load']);
+    add_action('plugins_loaded', [__CLASS__, 'load']);
 
     // Assets
     add_action('wp_enqueue_scripts', [__CLASS__, 'enqueue_assets']);
