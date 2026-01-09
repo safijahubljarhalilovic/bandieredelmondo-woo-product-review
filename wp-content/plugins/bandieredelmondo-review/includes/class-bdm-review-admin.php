@@ -17,6 +17,7 @@ class BDM_Review_Admin {
     $new = [];
     $new['cb'] = $cols['cb'];
     $new['title'] = 'Review';
+    $new['bdm_status'] = 'Status';
     $new['bdm_product'] = 'Product';
     $new['bdm_rating'] = 'Rating';
     $new['bdm_email'] = 'Email';
@@ -40,6 +41,26 @@ class BDM_Review_Admin {
     if ($col === 'bdm_cert') {
       $c = (int)get_post_meta($post_id, '_bdm_certified', true);
       echo $c ? 'Yes' : 'No';
+    }
+    if ($col === 'bdm_status') {
+      $status = get_post_status($post_id);
+      $confirmed = (int) get_post_meta($post_id, '_bdm_confirmed', true);
+
+      if ($status === 'draft' && !$confirmed) {
+        echo '<span style="color:#777;">🕒 Pending email</span>';
+      }
+      elseif ($status === 'pending') {
+        echo '<span style="color:#d98400;">⏳ Pending approval</span>';
+      }
+      elseif ($status === 'publish') {
+        echo '<span style="color:#0a7;font-weight:600;">✅ Approved</span>';
+      }
+      elseif ($status === 'bdm_rejected') {
+        echo '<span style="color:#b32d2e;">❌ Rejected</span>';
+      }
+      else {
+        echo esc_html($status);
+      }
     }
   }
 
