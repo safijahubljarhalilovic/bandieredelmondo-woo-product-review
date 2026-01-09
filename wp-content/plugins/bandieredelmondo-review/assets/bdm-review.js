@@ -51,7 +51,12 @@
       } else {
         $msg.text((resp && resp.data && resp.data.message) ? resp.data.message : BDMReview.i18n.error);
       }
-    }).fail(function(){
+    }).fail(function(xhr, status, err){
+      console.log("FAIL status:", status);
+      console.log("HTTP:", xhr.status);
+      console.log("Response:", xhr.responseText);
+      console.log("err:", err);
+      
       $msg.text(BDMReview.i18n.error);
     }).always(function(){
       $btn.prop('disabled', false).text($btn.data('label'));
