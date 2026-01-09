@@ -23,6 +23,9 @@ class BDM_Review_CPT {
       'supports' => ['title', 'editor'],
       'capability_type' => 'post',
       'map_meta_cap' => true,
+      'capabilities' => [
+        'create_posts' => false,
+      ],
     ]);
   }
 
