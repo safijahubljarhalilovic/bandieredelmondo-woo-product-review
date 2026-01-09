@@ -11,6 +11,8 @@ class BDM_Review_Admin {
     add_action('admin_init', [__CLASS__, 'handle_actions']);
 
     add_action('admin_menu', [__CLASS__, 'stats_menu']);
+
+    add_filter('post_row_actions', [__CLASS__, 'hide_row_actions'], 999, 2);
   }
 
   public static function columns($cols) {
@@ -176,5 +178,37 @@ class BDM_Review_Admin {
       </table>
     </div>
     <?php
+  }
+
+  public static function hide_row_actions($actions, $post) {
+    if (empty($post) || $post->post_type !== BDM_Review_CPT::CPT) {
+      return $actions;
+    }
+
+    // Remove built-in row actions
+    unset($actions['edit']);                 // "Edit"
+    unset($actions['inline hide-if-no-js']); // "Quick Edit"
+    unset($actions['trash']);                // "Trash"
+    unset($actions['view']);                 // "View"
+    unset($actions['preview']);              // "Preview"
+
+    // Remove actions added by other plugins (common keys)
+    unset($actions['duplicate']);            // "Duplicate"
+    unset($actions['download']);             // "Download"
+    unset($actions['copy']);                 // sometimes used
+
+    // Safety net: remove anything that contains these words in the label (for plugins using random keys)
+    foreach ($actions as $key => $html) {
+      $needle = strtolower(wp_strip_all_tags($html));
+      if (
+        str_contains($needle, 'quick edit') ||
+        str_contains($needle, 'duplicate') ||
+        str_contains($needle, 'download')
+      ) {
+        unset($actions[$key]);
+      }
+    }
+
+    return $actions;
   }
 }
