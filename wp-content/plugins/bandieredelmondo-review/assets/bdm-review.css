@@ -252,7 +252,9 @@
   user-select:none;
   color: #FFC107;
 }
-.bdm-star-inline.is-off{ opacity:.25; }
+.bdm-star-inline.is-off{ 
+  color: #E0E0E0;
+}
 
 .bdm-review-subrow{
   margin-top:6px;
