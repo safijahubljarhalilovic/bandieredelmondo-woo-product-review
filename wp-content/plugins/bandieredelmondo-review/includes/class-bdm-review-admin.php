@@ -116,43 +116,6 @@ class BDM_Review_Admin {
       'bdm-review-stats',
       [__CLASS__, 'render_stats_page']
     );
-
-    add_submenu_page(
-      'edit.php?post_type=' . BDM_Review_CPT::CPT,
-      'Settings',
-      'Settings',
-      'manage_options',
-      'bdm-review-settings',
-      [__CLASS__, 'render_settings_page']
-    );
-  }
-
-  public static function render_settings_page() {
-    if (!current_user_can('manage_options')) return;
-
-    ?>
-    <div class="wrap">
-      <h1>BDM Review Settings</h1>
-      <form method="post" action="options.php">
-        <?php settings_fields('bdm_review_settings'); ?>
-        <table class="form-table" role="presentation">
-          <tr>
-            <th scope="row">Output Product JSON-LD (review + aggregateRating)</th>
-            <td>
-              <label>
-                <input type="checkbox" name="bdm_review_output_schema" value="1" <?php checked((bool)get_option('bdm_review_output_schema', true)); ?>>
-                Enable schema output on product pages
-              </label>
-              <p class="description">
-                If your theme/WooCommerce already outputs Product schema, enabling this may create duplicates. If you see duplicate schema warnings, disable this option and we can adapt to your theme.
-              </p>
-            </td>
-          </tr>
-        </table>
-        <?php submit_button(); ?>
-      </form>
-    </div>
-    <?php
   }
 
   public static function render_stats_page() {

@@ -13,5 +13,3 @@ if (!defined('WP_UNINSTALL_PLUGIN')) exit;
 // foreach ($reviews as $rid) {
 //   wp_delete_post($rid, true);
 // }
-//
-// delete_option('bdm_review_output_schema');

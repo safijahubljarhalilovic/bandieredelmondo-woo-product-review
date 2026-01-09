@@ -62,14 +62,6 @@ class BandieredelMondo_Review_Plugin {
       ],
     ]);
   }
-
-  public static function register_settings() {
-    register_setting('bdm_review_settings', 'bdm_review_output_schema', [
-      'type' => 'boolean',
-      'default' => true,
-      'sanitize_callback' => function($val){ return (bool)$val; }
-    ]);
-  }
 }
 
 BandieredelMondo_Review_Plugin::init();
