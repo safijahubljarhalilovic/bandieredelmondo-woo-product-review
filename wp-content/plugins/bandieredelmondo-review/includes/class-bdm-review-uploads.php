@@ -77,7 +77,7 @@ class BDM_Review_Uploads {
     $html .= '<p><label><strong>Foto del prodotto</strong><br><input type="file" name="product_photo" accept="image/*"></label></p>';
     $html .= '<p><label><strong>Foto del profilo</strong><br><input type="file" name="profile_photo" accept="image/*"></label></p>';
 
-    $html .= '<button type="submit" style="padding:10px 14px;border:1px solid #222;background:#222;color:#fff;border-radius:8px;cursor:pointer;">Carica foto</button>';
+    $html .= '<button type="submit" style="padding:10px 14px;border:1px solid #222;background:#222;color:#fff;border-radius:8px;cursor:pointer;">Invia</button>';
     $html .= '</form>';
 
     return $html;
