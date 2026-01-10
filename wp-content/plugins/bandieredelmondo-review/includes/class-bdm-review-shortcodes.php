@@ -216,19 +216,6 @@ class BDM_Review_Shortcodes {
           echo wp_kses_post(nl2br(esc_html($comment)));
         echo '</div>';
     
-        // Tags row (like screenshot)
-        echo '<div class="bdm-up-tags">';
-          if ($cert) {
-            echo '<span class="bdm-up-tag">' . esc_html__('Payment verified', 'bandieredelmondo-review') . '</span>';
-          } else {
-            echo '<span class="bdm-up-tag">' . esc_html__('Guest review', 'bandieredelmondo-review') . '</span>';
-          }
-          if ($has_photos) {
-            echo '<span class="bdm-up-tag">' . esc_html__('Has photos', 'bandieredelmondo-review') . '</span>';
-          }
-          echo '<span class="bdm-up-tag">' . esc_html(sprintf(__('Rating: %d/5', 'bandieredelmondo-review'), $rating)) . '</span>';
-        echo '</div>';
-    
         // Photos row (clean thumbnails)
         if (!empty($atts['show_photos'])) {
           $photo_ids = [];
