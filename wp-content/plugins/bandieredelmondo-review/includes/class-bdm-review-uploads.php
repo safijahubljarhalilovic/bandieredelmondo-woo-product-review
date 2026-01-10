@@ -10,6 +10,46 @@ class BDM_Review_Uploads {
     add_action('admin_post_bdm_review_upload', [__CLASS__, 'handle_upload_post']);
   }
 
+  private static function validate_order_number_for_review($order_number, $rid) {
+    if (!function_exists('wc_get_order')) return false;
+  
+    $order_number = trim((string)$order_number);
+    if ($order_number === '') return false;
+  
+    // Most stores use numeric order IDs as "order number"
+    // We'll accept numeric only. (If you use custom order numbers plugin, tell me and I’ll adapt.)
+    if (!ctype_digit($order_number)) return false;
+  
+    $order_id = (int)$order_number;
+    if ($order_id <= 0) return false;
+  
+    $order = wc_get_order($order_id);
+    if (!$order) return false;
+  
+    $review_email = (string) get_post_meta($rid, '_bdm_email', true);
+    $review_email = sanitize_email($review_email);
+  
+    $order_email = sanitize_email($order->get_billing_email());
+    if (!$review_email || !$order_email) return false;
+  
+    // Must match email of the review
+    if (strtolower($review_email) !== strtolower($order_email)) return false;
+  
+    // Must contain the reviewed product
+    $product_id = (int) get_post_meta($rid, '_bdm_product_id', true);
+    if ($product_id <= 0) return false;
+  
+    foreach ($order->get_items() as $item) {
+      $pid = (int)$item->get_product_id();
+      $vid = (int)$item->get_variation_id();
+      if ($pid === $product_id || $vid === $product_id) {
+        return true;
+      }
+    }
+  
+    return false;
+  }  
+
   public static function add_query_vars() {
     add_filter('query_vars', function($vars){
       $vars[] = 'bdm_review_upload';
@@ -113,8 +153,23 @@ class BDM_Review_Uploads {
     }
 
     $order_number = isset($_POST['order_number']) ? sanitize_text_field(wp_unslash($_POST['order_number'])) : '';
+    $order_number = trim($order_number);
+
     if ($order_number !== '') {
-      update_post_meta($rid, '_bdm_order_number', $order_number);
+      // NEW: validate and certify
+      if (self::validate_order_number_for_review($order_number, $rid)) {
+        update_post_meta($rid, '_bdm_certified', 1);
+        update_post_meta($rid, '_bdm_order_number', $order_number);
+      } else {
+        // Keep spontaneous if invalid
+        update_post_meta($rid, '_bdm_certified', 0);
+        update_post_meta($rid, '_bdm_order_invalid', 1);
+      }
+    } else {
+      // No order number provided => spontaneous (no label on frontend)
+      delete_post_meta($rid, '_bdm_order_number');
+      delete_post_meta($rid, '_bdm_order_invalid');
+      update_post_meta($rid, '_bdm_certified', 0);
     }
 
     $prod_id = self::handle_one_upload('product_photo', $rid);
@@ -123,10 +178,23 @@ class BDM_Review_Uploads {
     if ($prod_id) update_post_meta($rid, '_bdm_product_photo_id', $prod_id);
     if ($prof_id) update_post_meta($rid, '_bdm_profile_photo_id', $prof_id);
 
+    $is_cert = (int) get_post_meta($rid, '_bdm_certified', true);
+    $is_invalid = (int) get_post_meta($rid, '_bdm_order_invalid', true);
+
     $html  = '<div style="max-width:720px;margin:40px auto;padding:20px;border:1px solid #eee;border-radius:12px;font-family:system-ui;">';
-    $html .= '<h2>Caricamento completato</h2>';
-    $html .= '<p>Le tue foto sono state salvate. La tua recensione verrà visualizzata dopo l\'approvazione dell\'amministratore.</p>';
+    $html .= '<h2>' . esc_html__('Salvato', 'bandieredelmondo-review') . '</h2>';
+
+    if ($order_number !== '' && $is_cert) {
+      $html .= '<p style="color:#0a7;font-weight:600;">' . esc_html__('Ordine verificato ✅ La tua recensione verrà contrassegnata come certificata dopo l\'approvazione dell\'amministratore.', 'bandieredelmondo-review') . '</p>';
+    } elseif ($order_number !== '' && $is_invalid) {
+      $html .= '<p style="color:#b32d2e;font-weight:600;">' . esc_html__('Numero d\'ordine non verificato. La tua recensione sarà considerata spontanea, a meno che l\'amministratore non la verifichi manualmente.', 'bandieredelmondo-review') . '</p>';
+    } else {
+      $html .= '<p>' . esc_html__('Nessun numero d\'ordine fornito. La tua recensione sarà considerata spontanea, a meno che l\'amministratore non la verifichi manualmente.', 'bandieredelmondo-review') . '</p>';
+    }
+
+    $html .= '<p>' . esc_html__('Le tue foto sono state salvate. La tua recensione apparirà dopo l\'approvazione dell\'amministratore.', 'bandieredelmondo-review') . '</p>';
     $html .= '</div>';
+
     wp_die($html, 'Caricamento completato', ['response' => 200]);
   }
 }
