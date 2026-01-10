@@ -7,32 +7,7 @@ class BDM_Review_Ajax {
     add_action('wp_ajax_bdm_submit_review', [__CLASS__, 'submit_review']);
     add_action('wp_ajax_nopriv_bdm_submit_review', [__CLASS__, 'submit_review']);
   }
-
-  private static function is_certified_purchase($email, $product_id) {
-    if (!function_exists('wc_get_orders')) return 0;
-
-    $email = sanitize_email($email);
-    if (!$email || !$product_id) return 0;
-
-    // Search recent-ish orders by billing email
-    $orders = wc_get_orders([
-      'limit' => 50,
-      'billing_email' => $email,
-      'status' => ['wc-processing', 'wc-completed', 'wc-on-hold'],
-      'orderby' => 'date',
-      'order' => 'DESC'
-    ]);
-
-    foreach ($orders as $order) {
-      foreach ($order->get_items() as $item) {
-        if ((int)$item->get_product_id() === (int)$product_id || (int)$item->get_variation_id() === (int)$product_id) {
-          return 1;
-        }
-      }
-    }
-    return 0;
-  }
-
+  
   public static function submit_review() {
     $nonce = isset($_POST['nonce']) ? sanitize_text_field($_POST['nonce']) : '';
     if (!wp_verify_nonce($nonce, 'bdm_review_nonce')) {
