@@ -24,11 +24,16 @@ class BDM_Review_Admin {
     $new['bdm_rating'] = 'Rating';
     $new['bdm_email'] = 'Email';
     $new['bdm_cert'] = 'Certified';
+    $new['bdm_order'] = 'Order #';
     $new['date'] = $cols['date'];
     return $new;
   }
 
   public static function column_content($col, $post_id) {
+    if ($col === 'bdm_order') {
+      $ord = get_post_meta($post_id, '_bdm_order_number', true);
+      echo $ord ? esc_html($ord) : '—';
+    }
     if ($col === 'bdm_product') {
       $pid = absint(get_post_meta($post_id, '_bdm_product_id', true));
       echo $pid ? '<a href="' . esc_url(get_edit_post_link($pid)) . '">' . esc_html(get_the_title($pid)) . '</a>' : '—';
@@ -41,8 +46,13 @@ class BDM_Review_Admin {
       echo esc_html(get_post_meta($post_id, '_bdm_email', true));
     }
     if ($col === 'bdm_cert') {
-      $c = (int)get_post_meta($post_id, '_bdm_certified', true);
-      echo $c ? 'Yes' : 'No';
+      $c = (int) get_post_meta($post_id, '_bdm_certified', true);
+      // traffic-light indicator
+      if ($c) {
+        echo '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#0a7;" title="Certificato"></span>';
+      } else {
+        echo '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f2b400;" title="Spontaneo"></span>';
+      }
     }
     if ($col === 'bdm_status') {
       $status = get_post_status($post_id);

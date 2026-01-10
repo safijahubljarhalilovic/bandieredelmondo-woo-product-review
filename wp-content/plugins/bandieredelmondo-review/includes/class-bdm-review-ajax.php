@@ -81,8 +81,8 @@ class BDM_Review_Ajax {
     update_post_meta($rid, '_bdm_comment', wp_strip_all_tags($comment));
     update_post_meta($rid, '_bdm_confirmed', 0);
 
-    $cert = self::is_certified_purchase($email, $product_id);
-    update_post_meta($rid, '_bdm_certified', $cert);
+    // Admin will verify certification; default is NOT certified
+    update_post_meta($rid, '_bdm_certified', 0);
 
     // Confirmation token
     $token_plain = wp_generate_password(32, false, false);

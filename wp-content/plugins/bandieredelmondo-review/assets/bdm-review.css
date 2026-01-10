@@ -513,3 +513,20 @@
   border-color:#ddd;
   color:#bbb;
 }
+
+.bdm-green-star{
+  color:#0a7;
+  font-weight:800;
+  font-size:16px;
+  vertical-align:middle;
+}
+
+.bdm-certified-legend{
+  margin-top:14px;
+  font-size:13px;
+  color:#333;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  opacity:.95;
+}

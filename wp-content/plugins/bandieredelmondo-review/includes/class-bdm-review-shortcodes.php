@@ -154,6 +154,8 @@ class BDM_Review_Shortcodes {
     echo '<div class="bdm-reviews-list">';
 
     while ($q->have_posts()) {
+      $has_any_certified = false;
+
       $q->the_post();
       $rid = get_the_ID();
     
@@ -206,7 +208,13 @@ class BDM_Review_Shortcodes {
         echo '<div class="bdm-up-card-header">';
           echo '<div class="bdm-up-avatar">' . $avatar_html . '</div>';
           echo '<div class="bdm-up-title-wrap">';
-            echo '<div class="bdm-up-title">' . esc_html($name) . '</div>';
+            echo '<div class="bdm-up-title">';
+            echo esc_html($name);
+            if ($cert) {
+              $has_any_certified = true;
+              echo ' <span class="bdm-green-star" title="' . esc_attr__('Certified purchase', 'bandieredelmondo-review') . '">★</span>';
+            }
+            echo '</div>';
           echo '</div>';
         echo '</div>';
 
@@ -215,9 +223,10 @@ class BDM_Review_Shortcodes {
         echo '<div class="bdm-up-meta">';
           echo '<time datetime="' . esc_attr($date_iso) . '">' . esc_html($date_human) . '</time>';
           echo '<span class="bdm-up-dot">•</span>';
-          echo $cert
-            ? '<span class="bdm-up-verified">✔ ' . esc_html__('Certified purchase', 'bandieredelmondo-review') . '</span>'
-            : '<span class="bdm-up-muted">' . esc_html__('Not certified', 'bandieredelmondo-review') . '</span>';
+          if ($cert) {
+            echo '<span class="bdm-up-dot">•</span>';
+            echo '<span class="bdm-up-verified">✔ ' . esc_html__('Acquisto certificato', 'bandieredelmondo-review') . '</span>';
+          }
         echo '</div>';
     
         // Body
@@ -244,7 +253,7 @@ class BDM_Review_Shortcodes {
           }
         }
     
-        // Bottom stats row (like screenshot)
+        // Bottom stats row
         echo '<div class="bdm-up-stats">';
           echo '<div class="bdm-up-stat">' . $stars_html . '</div>';
         echo '</div>';

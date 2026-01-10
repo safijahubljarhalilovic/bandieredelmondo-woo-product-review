@@ -27,6 +27,13 @@ class BDM_Review_Uploads {
     $html .= '<input type="hidden" name="token" value="' . esc_attr($token_plain) . '">';
     $html .= '<input type="hidden" name="nonce" value="' . esc_attr($nonce) . '">';
 
+    $html .= '<p style="margin:0 0 10px;">';
+    $html .= '<label><strong>' . esc_html__('Numero dell\'ordine', 'bandieredelmondo-review') . '</strong><br>';
+    $html .= '<input type="text" name="order_number" maxlength="80" style="width:100%;max-width:420px;padding:10px;border:1px solid #ddd;border-radius:8px;" placeholder="' . esc_attr__('Se hai acquistato, inserisci il numero dell\'ordine (facoltativo)', 'bandieredelmondo-review') . '">';
+    $html .= '</label>';
+    $html .= '<br><small style="opacity:.8;">' . esc_html__('Se non hai un numero d\'ordine, puoi lasciare questo campo vuoto. L\'amministratore verificherà se la recensione è certificata.', 'bandieredelmondo-review') . '</small>';
+    $html .= '</p>';
+
     $html .= '<p><label><strong>Foto del prodotto</strong><br><input type="file" name="product_photo" accept="image/*"></label></p>';
     $html .= '<p><label><strong>Foto del profilo</strong><br><input type="file" name="profile_photo" accept="image/*"></label></p>';
 
@@ -103,6 +110,11 @@ class BDM_Review_Uploads {
     }
     if (!self::verify_token($rid, $token)) {
       wp_die('Invalid token.');
+    }
+
+    $order_number = isset($_POST['order_number']) ? sanitize_text_field(wp_unslash($_POST['order_number'])) : '';
+    if ($order_number !== '') {
+      update_post_meta($rid, '_bdm_order_number', $order_number);
     }
 
     $prod_id = self::handle_one_upload('product_photo', $rid);
