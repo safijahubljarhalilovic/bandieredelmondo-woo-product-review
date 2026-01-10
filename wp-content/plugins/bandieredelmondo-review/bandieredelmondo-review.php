@@ -60,8 +60,8 @@ class BandieredelMondo_Review_Plugin {
       'nonce'   => wp_create_nonce('bdm_review_nonce'),
       'siteUrl' => home_url('/'),
       'i18n' => [
-        'submitting' => __('Submitting...', 'bandieredelmondo-review'),
-        'error' => __('Something went wrong. Please try again.', 'bandieredelmondo-review'),
+        'submitting' => __('Invio...', 'bandieredelmondo-review'),
+        'error' => __('Qualcosa è andato storto. Per favore riprova.', 'bandieredelmondo-review'),
       ],
     ]);
   }
