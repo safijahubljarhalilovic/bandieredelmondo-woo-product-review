@@ -78,7 +78,7 @@ class BDM_Review_Shortcodes {
 
             <div class="bdm-review-field">
               <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.4;">
-                <input type="checkbox" name="accept_policy" value="1" required style="margin-top:3px;">
+                <input type="checkbox" name="accept_policy" value="1" required style="margin-top:3px; width: 15px; height: 15px;">
                 <span>
                   <?php echo esc_html__('Accetto la cookie policy di Bandiere del Mondo', 'bandieredelmondo-review'); ?>
                 </span>
