@@ -222,7 +222,6 @@ class BDM_Review_Shortcodes {
         // Meta line
         echo '<div class="bdm-up-meta">';
           echo '<time datetime="' . esc_attr($date_iso) . '">' . esc_html($date_human) . '</time>';
-          echo '<span class="bdm-up-dot">•</span>';
           if ($cert) {
             echo '<span class="bdm-up-dot">•</span>';
             echo '<span class="bdm-up-verified">✔ ' . esc_html__('Acquisto certificato', 'bandieredelmondo-review') . '</span>';
