@@ -13,6 +13,9 @@ class BDM_Review_Admin {
     add_action('admin_menu', [__CLASS__, 'stats_menu']);
 
     add_filter('post_row_actions', [__CLASS__, 'hide_row_actions'], 999, 2);
+
+    add_action('add_meta_boxes', [__CLASS__, 'add_metabox']);
+    add_action('save_post_' . BDM_Review_CPT::CPT, [__CLASS__, 'save_metabox']);
   }
 
   public static function columns($cols) {
@@ -184,4 +187,53 @@ class BDM_Review_Admin {
 
     return $actions;
   }
+
+  public static function add_metabox() {
+    add_meta_box(
+      'bdm_review_cert_box',
+      'Certification',
+      [__CLASS__, 'render_metabox'],
+      BDM_Review_CPT::CPT,
+      'side',
+      'high'
+    );
+  }
+  
+  public static function render_metabox($post) {
+    $cert = (int) get_post_meta($post->ID, '_bdm_certified', true);
+    $ord  = (string) get_post_meta($post->ID, '_bdm_order_number', true);
+  
+    wp_nonce_field('bdm_review_cert_save', 'bdm_review_cert_nonce');
+  
+    echo '<p><label style="display:flex;gap:8px;align-items:center;">';
+    echo '<input type="checkbox" name="bdm_certified" value="1" ' . checked(1, $cert, false) . '>';
+    echo '<strong>Acquisto certificato</strong>';
+    echo '</label></p>';
+  
+    echo '<p style="margin:0;"><label><strong>Numero d\'ordine</strong><br>';
+    echo '<input type="text" name="bdm_order_number" value="' . esc_attr($ord) . '" maxlength="80" style="width:100%;">';
+    echo '</label></p>';
+  
+    echo '<p style="opacity:.8;font-size:12px;margin-top:8px;">';
+    echo 'Se la certificazione è selezionata, la recensione mostrerà una stella verde sulla pagina del prodotto.';
+    echo '</p>';
+  }
+  
+  public static function save_metabox($post_id) {
+    if (!isset($_POST['bdm_review_cert_nonce']) || !wp_verify_nonce($_POST['bdm_review_cert_nonce'], 'bdm_review_cert_save')) {
+      return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+  
+    $cert = isset($_POST['bdm_certified']) ? 1 : 0;
+    update_post_meta($post_id, '_bdm_certified', $cert);
+  
+    $ord = isset($_POST['bdm_order_number']) ? sanitize_text_field(wp_unslash($_POST['bdm_order_number'])) : '';
+    if ($ord !== '') {
+      update_post_meta($post_id, '_bdm_order_number', $ord);
+    } else {
+      delete_post_meta($post_id, '_bdm_order_number');
+    }
+  }  
 }
