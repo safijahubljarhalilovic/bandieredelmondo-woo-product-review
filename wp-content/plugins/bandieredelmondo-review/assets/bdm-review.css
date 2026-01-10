@@ -449,9 +449,10 @@
   font-size:14px;
   line-height:1;
   user-select:none;
+  color: #FFC107;
 }
-.bdm-up-star.is-off{ opacity:.25; }
-.bdm-up-star.is-on{ opacity:1; }
+.bdm-up-star.is-off{ color: #E0E0E0; }
+.bdm-up-star.is-on{ color: #FFC107; }
 
 .bdm-up-photos{
   margin-top:14px;
