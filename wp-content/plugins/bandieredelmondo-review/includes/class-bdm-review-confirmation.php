@@ -57,13 +57,13 @@ class BDM_Review_Confirmation {
 
     // Render simple confirmation + upload form
     $html  = '<div style="max-width:720px;margin:40px auto;padding:20px;border:1px solid #eee;border-radius:12px;font-family:system-ui;">';
-    $html .= '<h2>Thanks, ' . esc_html($name) . '!</h2>';
-    $html .= '<p>Your review for <strong>' . esc_html($product_title) . '</strong> has been confirmed and is waiting for admin approval.</p>';
+    $html .= '<h2>Grazie, ' . esc_html($name) . '!</h2>';
+    $html .= '<p>La tua recensione per <strong>' . esc_html($product_title) . '</strong> è stata confermata ed è in attesa di approvazione da parte dell’amministratore.</p>';
     $html .= '<hr style="margin:18px 0;">';
-    $html .= '<h3>Optional: add photos</h3>';
-    $html .= '<p>You can add a product photo and your profile photo. (Optional)</p>';
+    $html .= '<h3>Facoltativo: aggiungi foto</h3>';
+    $html .= '<p>Puoi aggiungere una foto del prodotto e una foto del tuo profilo. (Facoltativo)</p>';
     $html .= BDM_Review_Uploads::render_upload_form($rid, $token);
-    $html .= '<p style="margin-top:16px;opacity:.8;font-size:13px;">You can close this page. Your review will appear after admin approval.</p>';
+    $html .= '<p style="margin-top:16px;opacity:.8;font-size:13px;">Puoi chiudere questa pagina. La tua recensione apparirà dopo l’approvazione dell’amministratore.</p>';
     $html .= '</div>';
 
     wp_die($html, 'Review confirmed', ['response' => 200]);

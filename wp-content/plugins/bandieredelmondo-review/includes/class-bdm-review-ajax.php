@@ -91,16 +91,16 @@ class BDM_Review_Ajax {
     $product = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
     $product_name = $product ? $product->get_name() : get_the_title($product_id);
 
-    $subject = sprintf('[%s] Confirm your review', wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES));
+    $subject = sprintf('[%s] Conferma la tua recensione', wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES));
     $message = "Hi {$name},\n\n";
-    $message .= "Thanks for your review for: {$product_name}\n\n";
-    $message .= "Please confirm your review by clicking this link:\n{$confirm_url}\n\n";
-    $message .= "If you did not submit this review, you can ignore this email.\n";
+    $message .= "Grazie per la tua recensione al prodotto: {$product_name}\n\n";
+    $message .= "Conferma la recensione cliccando il seguente link:\n{$confirm_url}\n\n";
+    $message .= "Se non hai fatto la recensione, puoi ignorare questo messaggio.\n";
 
     wp_mail($email, $subject, $message);
 
     wp_send_json_success([
-      'message' => __('Thanks! Please check your email and confirm your review via the link we sent you.', 'bandieredelmondo-review'),
+      'message' => __('Grazie! Per favore controlla la tua posta elettronica e conferma la recensione attraverso il link che ti abbiamo inoltrato.', 'bandieredelmondo-review'),
     ]);
   }
 }

@@ -27,10 +27,10 @@ class BDM_Review_Uploads {
     $html .= '<input type="hidden" name="token" value="' . esc_attr($token_plain) . '">';
     $html .= '<input type="hidden" name="nonce" value="' . esc_attr($nonce) . '">';
 
-    $html .= '<p><label><strong>Product photo</strong><br><input type="file" name="product_photo" accept="image/*"></label></p>';
-    $html .= '<p><label><strong>Profile photo</strong><br><input type="file" name="profile_photo" accept="image/*"></label></p>';
+    $html .= '<p><label><strong>Foto del prodotto</strong><br><input type="file" name="product_photo" accept="image/*"></label></p>';
+    $html .= '<p><label><strong>Foto del profilo</strong><br><input type="file" name="profile_photo" accept="image/*"></label></p>';
 
-    $html .= '<button type="submit" style="padding:10px 14px;border:1px solid #222;background:#222;color:#fff;border-radius:8px;cursor:pointer;">Upload photos</button>';
+    $html .= '<button type="submit" style="padding:10px 14px;border:1px solid #222;background:#222;color:#fff;border-radius:8px;cursor:pointer;">Carica foto</button>';
     $html .= '</form>';
 
     return $html;
@@ -112,9 +112,9 @@ class BDM_Review_Uploads {
     if ($prof_id) update_post_meta($rid, '_bdm_profile_photo_id', $prof_id);
 
     $html  = '<div style="max-width:720px;margin:40px auto;padding:20px;border:1px solid #eee;border-radius:12px;font-family:system-ui;">';
-    $html .= '<h2>Upload complete</h2>';
-    $html .= '<p>Your photos have been saved. Your review will appear after admin approval.</p>';
+    $html .= '<h2>Caricamento completato</h2>';
+    $html .= '<p>Le tue foto sono state salvate. La tua recensione verrà visualizzata dopo l\'approvazione dell\'amministratore.</p>';
     $html .= '</div>';
-    wp_die($html, 'Upload complete', ['response' => 200]);
+    wp_die($html, 'Caricamento completato', ['response' => 200]);
   }
 }

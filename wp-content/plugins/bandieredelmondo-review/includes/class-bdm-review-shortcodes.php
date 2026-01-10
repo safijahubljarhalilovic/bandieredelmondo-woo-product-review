@@ -22,7 +22,7 @@ class BDM_Review_Shortcodes {
   public static function shortcode_cta($atts) {
     $atts = shortcode_atts([
       'product_id' => '',
-      'label' => __('Leave a review', 'bandieredelmondo-review'),
+      'label' => __('Lascia una recensione', 'bandieredelmondo-review'),
       'button_class' => '',
     ], $atts);
 
@@ -40,7 +40,7 @@ class BDM_Review_Shortcodes {
       <div id="<?php echo esc_attr($overlay_id); ?>" class="bdm-review-modal-overlay" role="dialog" aria-modal="true">
         <div class="bdm-review-modal">
           <div class="bdm-review-modal-header">
-            <strong><?php echo esc_html__('Write your review', 'bandieredelmondo-review'); ?></strong>
+            <strong><?php echo esc_html__('Scrivi la tua recensione', 'bandieredelmondo-review'); ?></strong>
             <button class="bdm-review-modal-close" aria-label="Close">×</button>
           </div>
 
@@ -51,7 +51,7 @@ class BDM_Review_Shortcodes {
             <input type="hidden" name="rating" value="0" />
 
             <div class="bdm-review-field">
-              <label><?php echo esc_html__('Name', 'bandieredelmondo-review'); ?></label>
+              <label><?php echo esc_html__('Nome', 'bandieredelmondo-review'); ?></label>
               <input type="text" name="name" required maxlength="120" />
             </div>
 
@@ -61,8 +61,8 @@ class BDM_Review_Shortcodes {
             </div>
 
             <div class="bdm-review-field">
-              <label><?php echo esc_html__('Rating', 'bandieredelmondo-review'); ?></label>
-              <div class="bdm-stars" aria-label="Rating">
+              <label><?php echo esc_html__('Voto', 'bandieredelmondo-review'); ?></label>
+              <div class="bdm-stars" aria-label="Voto">
                 <span class="bdm-star" data-star="1">★</span>
                 <span class="bdm-star" data-star="2">★</span>
                 <span class="bdm-star" data-star="3">★</span>
@@ -72,19 +72,19 @@ class BDM_Review_Shortcodes {
             </div>
 
             <div class="bdm-review-field">
-              <label><?php echo esc_html__('Comment', 'bandieredelmondo-review'); ?></label>
+              <label><?php echo esc_html__('Commento', 'bandieredelmondo-review'); ?></label>
               <textarea name="comment" required maxlength="5000"></textarea>
             </div>
 
             <button class="bdm-review-submit" data-label="<?php echo esc_attr__('Submit review', 'bandieredelmondo-review'); ?>">
-              <?php echo esc_html__('Submit review', 'bandieredelmondo-review'); ?>
+              <?php echo esc_html__('Conferma la recensione', 'bandieredelmondo-review'); ?>
             </button>
 
             <div class="bdm-review-msg" aria-live="polite"></div>
           </form>
 
           <p style="margin:10px 0 0; font-size:12px; opacity:.8;">
-            <?php echo esc_html__('After submitting, you will receive an email to confirm your review.', 'bandieredelmondo-review'); ?>
+            <?php echo esc_html__('Dopo la submission, riceverai una email per confermare la recensione.', 'bandieredelmondo-review'); ?>
           </p>
         </div>
       </div>
