@@ -250,17 +250,7 @@ class BDM_Review_Shortcodes {
     
         // Bottom stats row (like screenshot)
         echo '<div class="bdm-up-stats">';
-          echo '<div class="bdm-up-stat">';
-            echo $cert ? '<span class="bdm-up-check">✔</span>' : '<span class="bdm-up-check bdm-up-check-off">•</span>';
-            echo '<span>' . ($cert ? esc_html__('Verified', 'bandieredelmondo-review') : esc_html__('Unverified', 'bandieredelmondo-review')) . '</span>';
-          echo '</div>';
-    
           echo '<div class="bdm-up-stat">' . $stars_html . '</div>';
-    
-          if ($has_photos) {
-            $count_photos = (int)($product_photo_id ? 1 : 0) + (int)($profile_photo_id ? 1 : 0);
-            echo '<div class="bdm-up-stat"><span class="bdm-up-muted">' . esc_html(sprintf(__('Photos: %d', 'bandieredelmondo-review'), $count_photos)) . '</span></div>';
-          }
         echo '</div>';
     
       echo '</article>';
