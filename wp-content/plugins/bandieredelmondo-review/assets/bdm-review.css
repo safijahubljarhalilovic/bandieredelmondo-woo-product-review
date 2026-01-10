@@ -328,3 +328,151 @@
     padding:4px 8px;
   }
 }
+
+.bdm-up-card{
+  background:#fff;
+  border:1px solid #ececec;
+  border-radius:14px;
+  padding:18px;
+}
+
+.bdm-up-card + .bdm-up-card{ margin-top:14px; }
+
+.bdm-up-card-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.bdm-up-title{
+  font-size:18px;
+  font-weight:700;
+  line-height:1.2;
+  color:#111;
+}
+
+.bdm-up-actions{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.bdm-up-meta{
+  margin-top:6px;
+  font-size:13px;
+  color:#666;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.bdm-up-dot{ opacity:.6; }
+
+.bdm-up-verified{
+  color:#0a7;
+  font-weight:600;
+}
+
+.bdm-up-muted{
+  color:#777;
+}
+
+.bdm-up-body{
+  margin-top:12px;
+  font-size:14px;
+  line-height:1.6;
+  color:#222;
+}
+
+.bdm-up-tags{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.bdm-up-tag{
+  font-size:12px;
+  color:#444;
+  border:1px solid #e6e6e6;
+  border-radius:999px;
+  padding:6px 10px;
+  background:#fff;
+}
+
+.bdm-up-stars{
+  display:inline-flex;
+  gap:2px;
+  align-items:center;
+}
+
+.bdm-up-star{
+  font-size:14px;
+  line-height:1;
+  user-select:none;
+}
+.bdm-up-star.is-off{ opacity:.25; }
+.bdm-up-star.is-on{ opacity:1; }
+
+.bdm-up-photos{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.bdm-up-photo{
+  width:74px;
+  height:74px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid #eee;
+  background:#fafafa;
+  display:inline-flex;
+}
+
+.bdm-up-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.bdm-up-stats{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid #f0f0f0;
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  align-items:center;
+  font-size:13px;
+  color:#555;
+}
+
+.bdm-up-stat{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+}
+
+.bdm-up-check{
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  border:1px solid #0a7;
+  color:#0a7;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  line-height:1;
+}
+
+.bdm-up-check-off{
+  border-color:#ddd;
+  color:#bbb;
+}

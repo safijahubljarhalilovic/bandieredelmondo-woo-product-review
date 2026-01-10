@@ -147,71 +147,72 @@ class BDM_Review_Shortcodes {
     while ($q->have_posts()) {
       $q->the_post();
       $rid = get_the_ID();
-
-      $name   = BDM_Review_CPT::meta($rid, '_bdm_name', __('Anonymous', 'bandieredelmondo-review'));
-      $rating = (int) BDM_Review_CPT::meta($rid, '_bdm_rating', 0);
+    
+      $name    = BDM_Review_CPT::meta($rid, '_bdm_name', __('Anonymous', 'bandieredelmondo-review'));
+      $rating  = (int) BDM_Review_CPT::meta($rid, '_bdm_rating', 0);
       $comment = BDM_Review_CPT::meta($rid, '_bdm_comment', '');
-      $cert   = (int) BDM_Review_CPT::meta($rid, '_bdm_certified', 0);
-
+      $cert    = (int) BDM_Review_CPT::meta($rid, '_bdm_certified', 0);
+    
       $profile_photo_id = absint(BDM_Review_CPT::meta($rid, '_bdm_profile_photo_id', 0));
       $product_photo_id = absint(BDM_Review_CPT::meta($rid, '_bdm_product_photo_id', 0));
-
-      $date_iso = get_the_date('c', $rid);
+    
+      $date_iso   = get_the_date('c', $rid);
       $date_human = get_the_date(get_option('date_format'), $rid);
-
-      // Avatar (profile photo if exists, else initials)
-      $initials = '';
-      $parts = preg_split('/\s+/', trim($name));
-      if (!empty($parts[0])) $initials .= mb_strtoupper(mb_substr($parts[0], 0, 1));
-      if (count($parts) > 1 && !empty($parts[count($parts)-1])) $initials .= mb_strtoupper(mb_substr($parts[count($parts)-1], 0, 1));
-      $initials = $initials ?: 'U';
-
-      $avatar_html = '';
-      if ($profile_photo_id) {
-        $avatar_html = wp_get_attachment_image($profile_photo_id, 'thumbnail', false, [
-          'class' => 'bdm-review-avatar-img',
-          'loading' => 'lazy',
-          'alt' => esc_attr($name),
-        ]);
-      } else {
-        $avatar_html = '<div class="bdm-review-avatar-fallback" aria-hidden="true">' . esc_html($initials) . '</div>';
+    
+      $has_photos = ($profile_photo_id || $product_photo_id);
+    
+      // Stars (Upwork-like)
+      $stars_html = '<span class="bdm-up-stars" aria-label="' . esc_attr($rating) . ' out of 5">';
+      for ($i=1; $i<=5; $i++) {
+        $stars_html .= '<span class="bdm-up-star ' . ($i <= $rating ? 'is-on' : 'is-off') . '">★</span>';
       }
-
-      echo '<article class="bdm-review-card">';
-
-        echo '<div class="bdm-review-top">';
-          echo '<div class="bdm-review-avatar">' . $avatar_html . '</div>';
-
-          echo '<div class="bdm-review-head">';
-            echo '<div class="bdm-review-head-row">';
-              echo '<div class="bdm-review-name">' . esc_html($name) . '</div>';
-              echo $render_stars($rating);
-            echo '</div>';
-
-            echo '<div class="bdm-review-subrow">';
-              echo '<time class="bdm-review-date" datetime="' . esc_attr($date_iso) . '">' . esc_html($date_human) . '</time>';
-              if ($cert) {
-                echo '<span class="bdm-badge cert" title="' . esc_attr__('Verified purchase', 'bandieredelmondo-review') . '">✔ ' . esc_html__('Certified purchase', 'bandieredelmondo-review') . '</span>';
-              } else {
-                echo '<span class="bdm-badge plain" title="' . esc_attr__('Not verified purchase', 'bandieredelmondo-review') . '">' . esc_html__('Not certified', 'bandieredelmondo-review') . '</span>';
-              }
-            echo '</div>';
-          echo '</div>';
+      $stars_html .= '</span>';
+    
+      echo '<article class="bdm-up-card">';
+    
+        // Header row: big title + stars on the right
+        echo '<div class="bdm-up-card-header">';
+          echo '<div class="bdm-up-title">' . esc_html($name) . '</div>';
+          echo '<div class="bdm-up-actions">' . $stars_html . '</div>';
         echo '</div>';
-
-        echo '<div class="bdm-review-body">';
-          echo '<div class="bdm-review-text">' . wp_kses_post(nl2br(esc_html($comment))) . '</div>';
+    
+        // Meta line
+        echo '<div class="bdm-up-meta">';
+          echo '<time datetime="' . esc_attr($date_iso) . '">' . esc_html($date_human) . '</time>';
+          echo '<span class="bdm-up-dot">•</span>';
+          echo $cert
+            ? '<span class="bdm-up-verified">✔ ' . esc_html__('Certified purchase', 'bandieredelmondo-review') . '</span>'
+            : '<span class="bdm-up-muted">' . esc_html__('Not certified', 'bandieredelmondo-review') . '</span>';
         echo '</div>';
-
-        // Photos (product photo separate; avoid showing the same image twice)
+    
+        // Body
+        echo '<div class="bdm-up-body">';
+          echo wp_kses_post(nl2br(esc_html($comment)));
+        echo '</div>';
+    
+        // Tags row (like screenshot)
+        echo '<div class="bdm-up-tags">';
+          if ($cert) {
+            echo '<span class="bdm-up-tag">' . esc_html__('Payment verified', 'bandieredelmondo-review') . '</span>';
+          } else {
+            echo '<span class="bdm-up-tag">' . esc_html__('Guest review', 'bandieredelmondo-review') . '</span>';
+          }
+          if ($has_photos) {
+            echo '<span class="bdm-up-tag">' . esc_html__('Has photos', 'bandieredelmondo-review') . '</span>';
+          }
+          echo '<span class="bdm-up-tag">' . esc_html(sprintf(__('Rating: %d/5', 'bandieredelmondo-review'), $rating)) . '</span>';
+        echo '</div>';
+    
+        // Photos row (clean thumbnails)
         if (!empty($atts['show_photos'])) {
           $photo_ids = [];
           if ($product_photo_id) $photo_ids[] = $product_photo_id;
-
+          if ($profile_photo_id) $photo_ids[] = $profile_photo_id;
+    
           if ($photo_ids) {
-            echo '<div class="bdm-review-photos">';
+            echo '<div class="bdm-up-photos">';
             foreach ($photo_ids as $aid) {
-              echo '<a class="bdm-review-photo" href="' . esc_url(wp_get_attachment_url($aid)) . '" target="_blank" rel="noopener">';
+              echo '<a class="bdm-up-photo" href="' . esc_url(wp_get_attachment_url($aid)) . '" target="_blank" rel="noopener">';
               echo wp_get_attachment_image($aid, 'thumbnail', false, [
                 'loading' => 'lazy',
                 'alt' => esc_attr__('Review photo', 'bandieredelmondo-review')
@@ -221,9 +222,25 @@ class BDM_Review_Shortcodes {
             echo '</div>';
           }
         }
-
+    
+        // Bottom stats row (like screenshot)
+        echo '<div class="bdm-up-stats">';
+          echo '<div class="bdm-up-stat">';
+            echo $cert ? '<span class="bdm-up-check">✔</span>' : '<span class="bdm-up-check bdm-up-check-off">•</span>';
+            echo '<span>' . ($cert ? esc_html__('Verified', 'bandieredelmondo-review') : esc_html__('Unverified', 'bandieredelmondo-review')) . '</span>';
+          echo '</div>';
+    
+          echo '<div class="bdm-up-stat">' . $stars_html . '</div>';
+    
+          if ($has_photos) {
+            $count_photos = (int)($product_photo_id ? 1 : 0) + (int)($profile_photo_id ? 1 : 0);
+            echo '<div class="bdm-up-stat"><span class="bdm-up-muted">' . esc_html(sprintf(__('Photos: %d', 'bandieredelmondo-review'), $count_photos)) . '</span></div>';
+          }
+        echo '</div>';
+    
       echo '</article>';
     }
+    
 
     wp_reset_postdata();
 
