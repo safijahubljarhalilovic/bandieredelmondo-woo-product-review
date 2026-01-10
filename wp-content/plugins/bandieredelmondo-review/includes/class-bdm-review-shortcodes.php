@@ -212,7 +212,7 @@ class BDM_Review_Shortcodes {
             echo esc_html($name);
             if ($cert) {
               $has_any_certified = true;
-              echo ' <span class="bdm-green-star" title="' . esc_attr__('Certified purchase', 'bandieredelmondo-review') . '">★</span>';
+              echo ' <span class="bdm-green-star" title="' . esc_attr__('Acquisto certificato', 'bandieredelmondo-review') . '">★</span>';
             }
             echo '</div>';
           echo '</div>';
