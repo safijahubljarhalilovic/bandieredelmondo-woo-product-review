@@ -170,11 +170,37 @@ class BDM_Review_Shortcodes {
     
       echo '<article class="bdm-up-card">';
     
-        // Header row: big title + stars on the right
+        // Avatar (profile photo or initials)
+        $initials = '';
+        $parts = preg_split('/\s+/', trim($name));
+        if (!empty($parts[0])) $initials .= mb_strtoupper(mb_substr($parts[0], 0, 1));
+        if (count($parts) > 1 && !empty($parts[count($parts)-1])) {
+          $initials .= mb_strtoupper(mb_substr($parts[count($parts)-1], 0, 1));
+        }
+        $initials = $initials ?: 'U';
+
+        if ($profile_photo_id) {
+          $avatar_html = wp_get_attachment_image(
+            $profile_photo_id,
+            'thumbnail',
+            false,
+            [
+              'class' => 'bdm-up-avatar-img',
+              'loading' => 'lazy',
+              'alt' => esc_attr($name),
+            ]
+          );
+        } else {
+          $avatar_html = '<div class="bdm-up-avatar-fallback">' . esc_html($initials) . '</div>';
+        }
+
         echo '<div class="bdm-up-card-header">';
-          echo '<div class="bdm-up-title">' . esc_html($name) . '</div>';
-          echo '<div class="bdm-up-actions">' . $stars_html . '</div>';
+          echo '<div class="bdm-up-avatar">' . $avatar_html . '</div>';
+          echo '<div class="bdm-up-title-wrap">';
+            echo '<div class="bdm-up-title">' . esc_html($name) . '</div>';
+          echo '</div>';
         echo '</div>';
+
     
         // Meta line
         echo '<div class="bdm-up-meta">';

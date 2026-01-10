@@ -338,11 +338,47 @@
 
 .bdm-up-card + .bdm-up-card{ margin-top:14px; }
 
+/* ===== Header with Avatar Left ===== */
 .bdm-up-card-header{
   display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
+  align-items:center;
   gap:14px;
+}
+
+.bdm-up-avatar{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border-radius:999px;
+  overflow:hidden;
+  border:1px solid #eee;
+  background:#fafafa;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.bdm-up-avatar-img img{
+  width:44px;
+  height:44px;
+  object-fit:cover;
+  display:block;
+}
+
+.bdm-up-avatar-fallback{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:14px;
+  color:#555;
+}
+
+.bdm-up-title-wrap{
+  flex:1;
+  min-width:0;
 }
 
 .bdm-up-title{
