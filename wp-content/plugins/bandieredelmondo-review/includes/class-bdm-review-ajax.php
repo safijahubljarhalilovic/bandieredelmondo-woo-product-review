@@ -39,6 +39,13 @@ class BDM_Review_Ajax {
       wp_send_json_error(['message' => 'Invalid request.']);
     }
 
+    $accept_policy = isset($_POST['accept_policy']) ? absint($_POST['accept_policy']) : 0;
+    if (!$accept_policy) {
+      wp_send_json_error([
+        'message' => __('You must accept the cookie policy to submit a review.', 'bandieredelmondo-review')
+      ]);
+    }
+
     $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
     $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
     $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
@@ -81,6 +88,9 @@ class BDM_Review_Ajax {
     $token_plain = wp_generate_password(32, false, false);
     $token_hash  = wp_hash_password($token_plain);
     update_post_meta($rid, '_bdm_token_hash', $token_hash);
+
+    update_post_meta($rid, '_bdm_policy_accepted', 1);
+    update_post_meta($rid, '_bdm_policy_accepted_at', current_time('mysql'));
 
     $confirm_url = add_query_arg([
       'bdm_review_confirm' => 1,

@@ -76,6 +76,15 @@ class BDM_Review_Shortcodes {
               <textarea name="comment" required maxlength="5000"></textarea>
             </div>
 
+            <div class="bdm-review-field">
+              <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.4;">
+                <input type="checkbox" name="accept_policy" value="1" required style="margin-top:3px;">
+                <span>
+                  <?php echo esc_html__('Accetto la cookie policy di Bandiere del Mondo', 'bandieredelmondo-review'); ?>
+                </span>
+              </label>
+            </div>
+
             <button class="bdm-review-submit" data-label="<?php echo esc_attr__('Submit review', 'bandieredelmondo-review'); ?>">
               <?php echo esc_html__('Conferma la recensione', 'bandieredelmondo-review'); ?>
             </button>
