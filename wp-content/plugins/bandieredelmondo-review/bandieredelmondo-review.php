@@ -9,7 +9,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('BDM_REVIEW_VERSION', '1.0.0');
+define('BDM_REVIEW_VERSION', '1.1.1');
 define('BDM_REVIEW_PATH', plugin_dir_path(__FILE__));
 define('BDM_REVIEW_URL', plugin_dir_url(__FILE__));
 
