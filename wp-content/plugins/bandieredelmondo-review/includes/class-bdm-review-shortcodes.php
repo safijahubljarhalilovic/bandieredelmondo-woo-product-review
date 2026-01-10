@@ -85,8 +85,8 @@ class BDM_Review_Shortcodes {
               </label>
             </div>
 
-            <button class="bdm-review-submit" data-label="<?php echo esc_attr__('Submit review', 'bandieredelmondo-review'); ?>">
-              <?php echo esc_html__('Conferma la recensione', 'bandieredelmondo-review'); ?>
+            <button class="bdm-review-submit" data-label="<?php echo esc_attr__('Invia recensione', 'bandieredelmondo-review'); ?>">
+              <?php echo esc_html__('Invia recensione', 'bandieredelmondo-review'); ?>
             </button>
 
             <div class="bdm-review-msg" aria-live="polite"></div>
