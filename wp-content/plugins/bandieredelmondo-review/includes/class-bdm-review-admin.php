@@ -49,9 +49,9 @@ class BDM_Review_Admin {
       $c = (int) get_post_meta($post_id, '_bdm_certified', true);
       // traffic-light indicator
       if ($c) {
-        echo '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#0a7;" title="Certificato">Certificato</span>';
+        echo '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#0a7;" title="Certificato"></span> Certificato';
       } else {
-        echo '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f2b400;" title="Spontaneo">Spontaneo</span>';
+        echo '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f2b400;" title="Spontaneo"></span> Spontaneo';
       }
     }
     if ($col === 'bdm_status') {
