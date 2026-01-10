@@ -1,5 +1,11 @@
 (function($){
-  function openModal($overlay){ $overlay.css('display','flex'); }
+  function openModal($overlay){
+    if (!$overlay.data('bdm-appended')) {
+      $overlay.appendTo('body');
+      $overlay.data('bdm-appended', true);
+    }
+    $overlay.css('display','flex');
+  }
   function closeModal($overlay){ $overlay.hide(); }
 
   function setStars($wrap, val){
