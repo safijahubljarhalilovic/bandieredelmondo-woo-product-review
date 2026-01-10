@@ -162,7 +162,7 @@ class BDM_Review_Admin {
     }
 
     // Remove built-in row actions
-    unset($actions['edit']);                 // "Edit"
+    // unset($actions['edit']);                 // "Edit"
     unset($actions['inline hide-if-no-js']); // "Quick Edit"
     // unset($actions['trash']);                // "Trash"
     unset($actions['view']);                 // "View"
