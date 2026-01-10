@@ -233,7 +233,6 @@ class BDM_Review_Shortcodes {
         if (!empty($atts['show_photos'])) {
           $photo_ids = [];
           if ($product_photo_id) $photo_ids[] = $product_photo_id;
-          if ($profile_photo_id) $photo_ids[] = $profile_photo_id;
     
           if ($photo_ids) {
             echo '<div class="bdm-up-photos">';
