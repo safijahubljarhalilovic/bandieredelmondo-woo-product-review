@@ -130,7 +130,7 @@ class BDM_Review_Shortcodes {
     ]);
 
     if (!$q->have_posts()) {
-      return '<div class="bdm-reviews"><div class="bdm-reviews-empty">' . esc_html__('No reviews yet.', 'bandieredelmondo-review') . '</div></div>';
+      return '<div class="bdm-reviews"><div class="bdm-reviews-empty">' . esc_html__('Non ci sono recensioni per questo prodotto.', 'bandieredelmondo-review') . '</div></div>';
     }
 
     // Helpers
