@@ -323,7 +323,7 @@ class BDM_Review_Admin {
 
     echo '<tr><th><label>' . esc_html__('Certified purchase', 'bandieredelmondo-review') . '</label></th><td>';
     echo '<label><input type="checkbox" name="bdm_certified" value="1" ' . checked(1, $certified, false) . '> ';
-    echo esc_html__('Mark as certified (shows green star on frontend)', 'bandieredelmondo-review') . '</label>';
+    echo esc_html__('Mark as certified', 'bandieredelmondo-review') . '</label>';
     echo '</td></tr>';
 
     echo '</tbody></table>';
