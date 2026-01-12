@@ -211,21 +211,31 @@ class BDM_Review_Admin {
   }
 
   public static function enqueue_admin_assets($hook) {
-    // Only load on BDM review edit screens
     $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-    if (!$screen || $screen->post_type !== BDM_Review_CPT::CPT) return;
-
-    // Needed for wp.media uploader
+    if (!$screen || $screen->post_type !== BDM_Review_CPT::CPT) {
+      return;
+    }
+  
+    // Media uploader (for photos)
     wp_enqueue_media();
-
+  
+    // Admin JS
     wp_enqueue_script(
-      'bdm-review-admin',
+      'bdm-review-admin-js',
       BDM_REVIEW_URL . 'assets/bdm-review-admin.js',
       ['jquery'],
       BDM_REVIEW_VERSION,
       true
     );
-  }
+  
+    // Admin CSS (NEW)
+    wp_enqueue_style(
+      'bdm-review-admin-css',
+      BDM_REVIEW_URL . 'assets/bdm-review-admin.css',
+      [],
+      BDM_REVIEW_VERSION
+    );
+  }  
 
   public static function add_edit_metaboxes() {
     add_meta_box(
@@ -269,9 +279,22 @@ class BDM_Review_Admin {
     echo '<input type="email" name="bdm_email" value="' . esc_attr($email) . '" class="regular-text" maxlength="190">';
     echo '</td></tr>';
 
-    echo '<tr><th><label>' . esc_html__('Rating (1–5)', 'bandieredelmondo-review') . '</label></th><td>';
-    echo '<input type="number" name="bdm_rating" value="' . esc_attr($rating ?: 0) . '" min="1" max="5" step="1" style="width:80px;">';
+    echo '<tr><th>' . esc_html__('Rating', 'bandieredelmondo-review') . '</th><td>';
+
+    echo '<div class="bdm-admin-rating" data-value="' . esc_attr($rating) . '">';
+
+    for ($i = 1; $i <= 5; $i++) {
+      $on = ($i <= $rating) ? ' is-on' : '';
+      echo '<span class="bdm-admin-star' . $on . '" data-star="' . $i . '">★</span>';
+    }
+
+    echo '</div>';
+
+    // Hidden numeric field actually saved
+    echo '<input type="hidden" name="bdm_rating" id="bdm_admin_rating_input" value="' . esc_attr($rating) . '">';
+
     echo '</td></tr>';
+
 
     echo '<tr><th><label>' . esc_html__('Comment', 'bandieredelmondo-review') . '</label></th><td>';
     echo '<textarea name="bdm_comment" rows="6" style="width:100%;max-width:820px;">' . esc_textarea($comment) . '</textarea>';
