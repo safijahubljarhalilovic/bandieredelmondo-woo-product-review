@@ -278,9 +278,18 @@ class BDM_Review_Admin {
     echo '</td></tr>';
 
     echo '<tr><th><label>' . esc_html__('Product ID', 'bandieredelmondo-review') . '</label></th><td>';
-    echo '<input type="number" name="bdm_product_id" value="' . esc_attr($product_id ?: 0) . '" min="0" step="1" style="width:140px;">';
     if ($product_id) {
-      echo '<div style="margin-top:6px;opacity:.8;">' . esc_html__('Current product:', 'bandieredelmondo-review') . ' <strong>' . esc_html(get_the_title($product_id)) . '</strong></div>';
+      echo '<strong>' . esc_html(get_the_title($product_id)) . '</strong>';
+      echo ' <span style="opacity:.7;">(#' . esc_html($product_id) . ')</span>';
+    
+      $edit_link = get_edit_post_link($product_id);
+      if ($edit_link) {
+        echo '<div style="margin-top:6px;">';
+        echo '<a href="' . esc_url($edit_link) . '" target="_blank" rel="noopener">' . esc_html__('Edit product', 'bandieredelmondo-review') . '</a>';
+        echo '</div>';
+      }
+    } else {
+      echo '<em>' . esc_html__('No product assigned', 'bandieredelmondo-review') . '</em>';
     }
     echo '</td></tr>';
 
