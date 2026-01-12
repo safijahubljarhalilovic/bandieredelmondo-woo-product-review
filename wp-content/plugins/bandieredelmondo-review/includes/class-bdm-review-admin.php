@@ -16,6 +16,11 @@ class BDM_Review_Admin {
 
     add_action('add_meta_boxes', [__CLASS__, 'add_metabox']);
     add_action('save_post_' . BDM_Review_CPT::CPT, [__CLASS__, 'save_metabox']);
+
+    add_action('add_meta_boxes', [__CLASS__, 'add_edit_metaboxes']);
+    add_action('save_post_' . BDM_Review_CPT::CPT, [__CLASS__, 'save_edit_metaboxes']);
+    add_action('admin_enqueue_scripts', [__CLASS__, 'enqueue_admin_assets']);
+
   }
 
   public static function columns($cols) {
@@ -235,5 +240,165 @@ class BDM_Review_Admin {
     } else {
       delete_post_meta($post_id, '_bdm_order_number');
     }
-  }  
+  }
+
+  public static function enqueue_admin_assets($hook) {
+    // Only load on BDM review edit screens
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    if (!$screen || $screen->post_type !== BDM_Review_CPT::CPT) return;
+
+    // Needed for wp.media uploader
+    wp_enqueue_media();
+
+    wp_enqueue_script(
+      'bdm-review-admin',
+      BDM_REVIEW_URL . 'assets/bdm-review-admin.js',
+      ['jquery'],
+      BDM_REVIEW_VERSION,
+      true
+    );
+  }
+
+  public static function add_edit_metaboxes() {
+    add_meta_box(
+      'bdm_review_details_box',
+      __('Review details', 'bandieredelmondo-review'),
+      [__CLASS__, 'render_details_metabox'],
+      BDM_Review_CPT::CPT,
+      'normal',
+      'high'
+    );
+
+    add_meta_box(
+      'bdm_review_photos_box',
+      __('Review photos', 'bandieredelmondo-review'),
+      [__CLASS__, 'render_photos_metabox'],
+      BDM_Review_CPT::CPT,
+      'side',
+      'high'
+    );
+  }
+
+  public static function render_details_metabox($post) {
+    $name   = (string) get_post_meta($post->ID, '_bdm_name', true);
+    $email  = (string) get_post_meta($post->ID, '_bdm_email', true);
+    $rating = (int) get_post_meta($post->ID, '_bdm_rating', true);
+    $comment = (string) get_post_meta($post->ID, '_bdm_comment', true);
+
+    $product_id = (int) get_post_meta($post->ID, '_bdm_product_id', true);
+    $order_number = (string) get_post_meta($post->ID, '_bdm_order_number', true);
+    $certified = (int) get_post_meta($post->ID, '_bdm_certified', true);
+
+    wp_nonce_field('bdm_review_admin_edit_save', 'bdm_review_admin_edit_nonce');
+
+    echo '<table class="form-table" role="presentation"><tbody>';
+
+    echo '<tr><th><label>' . esc_html__('Name', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<input type="text" name="bdm_name" value="' . esc_attr($name) . '" class="regular-text" maxlength="120">';
+    echo '</td></tr>';
+
+    echo '<tr><th><label>' . esc_html__('Email', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<input type="email" name="bdm_email" value="' . esc_attr($email) . '" class="regular-text" maxlength="190">';
+    echo '</td></tr>';
+
+    echo '<tr><th><label>' . esc_html__('Rating (1–5)', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<input type="number" name="bdm_rating" value="' . esc_attr($rating ?: 0) . '" min="1" max="5" step="1" style="width:80px;">';
+    echo '</td></tr>';
+
+    echo '<tr><th><label>' . esc_html__('Comment', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<textarea name="bdm_comment" rows="6" style="width:100%;max-width:820px;">' . esc_textarea($comment) . '</textarea>';
+    echo '</td></tr>';
+
+    echo '<tr><th><label>' . esc_html__('Product ID', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<input type="number" name="bdm_product_id" value="' . esc_attr($product_id ?: 0) . '" min="0" step="1" style="width:140px;">';
+    if ($product_id) {
+      echo '<div style="margin-top:6px;opacity:.8;">' . esc_html__('Current product:', 'bandieredelmondo-review') . ' <strong>' . esc_html(get_the_title($product_id)) . '</strong></div>';
+    }
+    echo '</td></tr>';
+
+    echo '<tr><th><label>' . esc_html__('Order number', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<input type="text" name="bdm_order_number" value="' . esc_attr($order_number) . '" class="regular-text" maxlength="80">';
+    echo '<p class="description">' . esc_html__('Optional. Admin can verify purchase using this order number.', 'bandieredelmondo-review') . '</p>';
+    echo '</td></tr>';
+
+    echo '<tr><th><label>' . esc_html__('Certified purchase', 'bandieredelmondo-review') . '</label></th><td>';
+    echo '<label><input type="checkbox" name="bdm_certified" value="1" ' . checked(1, $certified, false) . '> ';
+    echo esc_html__('Mark as certified (shows green star on frontend)', 'bandieredelmondo-review') . '</label>';
+    echo '</td></tr>';
+
+    echo '</tbody></table>';
+  }
+
+  public static function render_photos_metabox($post) {
+    $profile_id = (int) get_post_meta($post->ID, '_bdm_profile_photo_id', true);
+    $product_id = (int) get_post_meta($post->ID, '_bdm_product_photo_id', true);
+
+    $profile_url = $profile_id ? wp_get_attachment_image_url($profile_id, 'thumbnail') : '';
+    $product_url = $product_id ? wp_get_attachment_image_url($product_id, 'thumbnail') : '';
+
+    echo '<div class="bdm-admin-photo-box" style="margin-bottom:14px;">';
+    echo '<strong>' . esc_html__('Profile photo (avatar)', 'bandieredelmondo-review') . '</strong>';
+    echo '<input type="hidden" id="bdm_profile_photo_id" name="bdm_profile_photo_id" value="' . esc_attr($profile_id) . '">';
+    echo '<div style="margin:10px 0;">';
+    echo '<img id="bdm_profile_photo_preview" src="' . esc_url($profile_url) . '" style="width:90px;height:90px;object-fit:cover;border:1px solid #ddd;border-radius:12px;' . ($profile_url ? '' : 'display:none;') . '">';
+    echo '</div>';
+    echo '<p style="margin:0;display:flex;gap:8px;flex-wrap:wrap;">';
+    echo '<button type="button" class="button bdm-media-pick" data-target="profile">' . esc_html__('Select/Upload', 'bandieredelmondo-review') . '</button>';
+    echo '<button type="button" class="button bdm-media-remove" data-target="profile">' . esc_html__('Remove', 'bandieredelmondo-review') . '</button>';
+    echo '</p>';
+    echo '</div>';
+
+    echo '<div class="bdm-admin-photo-box">';
+    echo '<strong>' . esc_html__('Product photo', 'bandieredelmondo-review') . '</strong>';
+    echo '<input type="hidden" id="bdm_product_photo_id" name="bdm_product_photo_id" value="' . esc_attr($product_id) . '">';
+    echo '<div style="margin:10px 0;">';
+    echo '<img id="bdm_product_photo_preview" src="' . esc_url($product_url) . '" style="width:90px;height:90px;object-fit:cover;border:1px solid #ddd;border-radius:12px;' . ($product_url ? '' : 'display:none;') . '">';
+    echo '</div>';
+    echo '<p style="margin:0;display:flex;gap:8px;flex-wrap:wrap;">';
+    echo '<button type="button" class="button bdm-media-pick" data-target="product">' . esc_html__('Select/Upload', 'bandieredelmondo-review') . '</button>';
+    echo '<button type="button" class="button bdm-media-remove" data-target="product">' . esc_html__('Remove', 'bandieredelmondo-review') . '</button>';
+    echo '</p>';
+    echo '</div>';
+  }
+
+  public static function save_edit_metaboxes($post_id) {
+    if (!isset($_POST['bdm_review_admin_edit_nonce']) || !wp_verify_nonce($_POST['bdm_review_admin_edit_nonce'], 'bdm_review_admin_edit_save')) {
+      return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    // Basic fields
+    $name = isset($_POST['bdm_name']) ? sanitize_text_field(wp_unslash($_POST['bdm_name'])) : '';
+    $email = isset($_POST['bdm_email']) ? sanitize_email(wp_unslash($_POST['bdm_email'])) : '';
+    $rating = isset($_POST['bdm_rating']) ? absint($_POST['bdm_rating']) : 0;
+    $comment = isset($_POST['bdm_comment']) ? wp_strip_all_tags(wp_unslash($_POST['bdm_comment'])) : '';
+
+    $product_id = isset($_POST['bdm_product_id']) ? absint($_POST['bdm_product_id']) : 0;
+    $order_number = isset($_POST['bdm_order_number']) ? sanitize_text_field(wp_unslash($_POST['bdm_order_number'])) : '';
+    $certified = isset($_POST['bdm_certified']) ? 1 : 0;
+
+    if ($name !== '') update_post_meta($post_id, '_bdm_name', $name);
+    if ($email !== '') update_post_meta($post_id, '_bdm_email', $email);
+    if ($rating >= 1 && $rating <= 5) update_post_meta($post_id, '_bdm_rating', $rating);
+    update_post_meta($post_id, '_bdm_comment', $comment);
+
+    if ($product_id > 0) update_post_meta($post_id, '_bdm_product_id', $product_id);
+
+    if ($order_number !== '') update_post_meta($post_id, '_bdm_order_number', $order_number);
+    else delete_post_meta($post_id, '_bdm_order_number');
+
+    update_post_meta($post_id, '_bdm_certified', $certified);
+
+    // Photo attachment IDs
+    $profile_photo_id = isset($_POST['bdm_profile_photo_id']) ? absint($_POST['bdm_profile_photo_id']) : 0;
+    $product_photo_id = isset($_POST['bdm_product_photo_id']) ? absint($_POST['bdm_product_photo_id']) : 0;
+
+    if ($profile_photo_id) update_post_meta($post_id, '_bdm_profile_photo_id', $profile_photo_id);
+    else delete_post_meta($post_id, '_bdm_profile_photo_id');
+
+    if ($product_photo_id) update_post_meta($post_id, '_bdm_product_photo_id', $product_photo_id);
+    else delete_post_meta($post_id, '_bdm_product_photo_id');
+  }
+
 }
