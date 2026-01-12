@@ -1,0 +1,31 @@
+/* ===============================
+   BDM Review – Admin Styles
+   =============================== */
+
+/* Admin star rating (edit review) */
+.bdm-admin-rating{
+    display:inline-flex;
+    gap:6px;
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+  }
+  
+  .bdm-admin-star{
+    color:#bbb;
+    user-select:none;
+  }
+  
+  .bdm-admin-star.is-on{
+    color:#ffb900; /* WordPress admin yellow */
+  }
+  
+  /* Optional: hover preview */
+  .bdm-admin-star:hover,
+  .bdm-admin-star:hover ~ .bdm-admin-star{
+    color:#bbb;
+  }
+  .bdm-admin-star:hover{
+    color:#ffb900;
+  }
+  

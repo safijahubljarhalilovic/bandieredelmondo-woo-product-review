@@ -7,6 +7,11 @@
 !wp-content/themes/Divi-child/
 !wp-content/themes/Divi-child/**
 
+!wp-content/
+!wp-content/plugins/
+!wp-content/plugins/bandieredelmondo-review/
+!wp-content/plugins/bandieredelmondo-review/**
+
 # (Optional) keep the .gitignore itself
 !.gitignore
 !.htaccess
