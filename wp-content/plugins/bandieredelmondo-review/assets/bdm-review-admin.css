@@ -17,7 +17,7 @@
   }
   
   .bdm-admin-star.is-on{
-    color:#ffb900; /* WordPress admin yellow */
+    color:#ffb900;
   }
   
   /* Optional: hover preview */
@@ -26,6 +26,10 @@
     color:#bbb;
   }
   .bdm-admin-star:hover{
+    color:#ffb900;
+  }
+
+  .bdm_rating.column-bdm_rating {
     color:#ffb900;
   }
   
