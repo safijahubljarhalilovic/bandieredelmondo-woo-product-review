@@ -16,3 +16,4 @@
 !.gitignore
 !.htaccess
 !wp-config.php
+!README.md
